@@ -52,7 +52,8 @@ function ValidarParametros() {
 }
 function cambiarNombre() {
   nameNuevo=$(echo "$1" | tr -s " " | tr " " "_")
-  if [ -d "$path/$nameNuevo" ]; then
+  echo "nombre nuevo: $nameNuevo"
+  if [ -f "$path/$nameNuevo" ]; then
     extension=$([[ "$nameNuevo" == *.* ]] && echo "${nameNuevo##*.}")
     nameSolo="${nameNuevo%%.*}"
     if [ "$entension" != " " ]; then
@@ -62,9 +63,9 @@ function cambiarNombre() {
     fi
   else
     if [ "$1" != "$nameNuevo" ]; then
-      echo "Se cambio el nombre del  archivo: '$1' por '$nameNuevo'"
-      mv "$path/$1" "$path/$nameNuevo"
+      echo "Se cambio el nombre del  archivo: '$name' por '$nameNuevo'"
     fi
+      mv "$path/$name" "$path/$nameNuevo"
   fi
 }
 
@@ -88,7 +89,7 @@ elif [ $# -eq 0 ]; then
   direc=$(pwd)
   opcion=" "
 fi
-
+echo "el directorio que recibi:  $direc"
 if [ "$opcion" == "-r" ]; then
   for j in $(find "$direc" -type f); do
     path=$(dirname "$j")
@@ -100,7 +101,9 @@ else
   for j in $(find "$direc" -type f); do
     path=$(dirname "$j")
     name=$(basename "$j")
-    if [ "$path" == "$direc" ]; then
+    echo " path encontrado: $path"
+    echo "nombre encontrado: $name"
+    if [ "$path" == "$direc" -o  "$path/" == "$direc" ]; then
       cambiarNombre "$name"
     fi
   done
