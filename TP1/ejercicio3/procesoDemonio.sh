@@ -22,7 +22,8 @@ function backUp() {
 }
 
 function count() {
-    echo ls -1 "$directorioDondeHacerBackup" | wc -l
+    ls -1 "$directorioDondeHacerBackup" | wc -l
+   
 }
 
 function clear() {
