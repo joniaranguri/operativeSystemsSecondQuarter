@@ -7,8 +7,10 @@ function mustSeeHelpAndExit(){
       exit
  }
 function help() {
-  echo "Ejemplos de ejecucion:
-  							 ./ejercicio6.sh directorio //hace el proceso en el directorio pasado por parametro"
+  echo "Este script permite listar los 10 Subdirectorios hoja de mayor peso, dado un directorio base"
+  echo "
+        Ejemplos de ejecucion:
+                 ./ejercicio6.sh directorio //hace el proceso en el directorio pasado por parametro"
  }
 function validateParameters() {
   if [ $2 -ne 1 ]; then
@@ -22,13 +24,34 @@ if [ $2 -eq 1 ]; then
     elif [ ! -d "$1" -a "$1" != "-h" -a "$1" != "-help" -a "$1" != "-?" -a "$1" != "-r" ]; then
       echo "Error ,consulte la ayuda"
       mustSeeHelpAndExit
-  	fi
+    fi
 fi
 
 }
  if [ $# -eq 0 ]; then
     echo "No se puede ejecutar el script sin parametros, consulte la ayuda"
     mustSeeHelpAndExit
- fi
- validateParameters"$1" $#
-echo "First line"
+fi
+if [ "$1" == "-h" -o "$1" == "-help" -o "$1" == "-?" ]; then
+  help
+    exit
+  fi
+ validateParameters "$1" $#
+  direc="$1"
+
+  declare -a arrDirectories
+
+ for SUBDIR in $(find "$direc" -type d -links 2 -exec du -Sh {} + | sort -rh | head -n 10 | cut -f2); do
+
+if [ ${#arrDirectories[@]} -lt 10 ]; then
+    arrDirectories=(${arrDirectories[*]} "$SUBDIR")
+fi
+  done
+
+echo -e '\n----------------------------------- Top 10 Subdirectories on $direc-----------------------------------'
+for item in "${arrDirectories[@]}"
+do
+  countFiles=$(ls $item -1 | grep -v ^l | wc -l)
+   size=$(du -h $item | cut -f1)
+    echo "$item $size $countFiles arch."
+done
