@@ -1,4 +1,6 @@
 #!/bin/bash
+IFS='
+'
 function mustSeeHelpAndExit(){
       echo "Puede ver la ayuda con las siguientes opciones:"
       echo " ./ejercicio6.sh -?"
@@ -48,7 +50,7 @@ if [ ${#arrDirectories[@]} -lt 10 ]; then
 fi
   done
 
-echo -e '\n----------------------------------- Top 10 Subdirectories on $direc-----------------------------------'
+echo -e '\n----------------------------------- Top 10 Subdirectories on path passed by parameter -----------------------------------'
 for item in "${arrDirectories[@]}"
 do
   countFiles=$(ls $item -1 | grep -v ^l | wc -l)
