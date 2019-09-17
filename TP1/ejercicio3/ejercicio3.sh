@@ -40,14 +40,16 @@ if [[ $1 == "-h" || $1 == "-?" || $1 == "-help" ]]; then
 fi
 
 if [[ $1 == "start" ]]; then
-    PID=$(ps -e | grep "./procesoDemonio.sh" | grep -v "grep" | cut -d " " -f1)
-    if [[ -z $PID ]]; then
+ pd=$(ps u | awk '$12== "./procesoDemonio.sh" {print $2}')
+    if [ "$pd" == "" ]
+    then
         ./procesoDemonio.sh "$2" "$3" "$4" &
         exit
-    else
+    else        
         echo "Ya existe un proceso en curso"
         exit
     fi
+   
 fi
 
 if [[ $1 == "count" ]]; then
@@ -80,6 +82,7 @@ if [[ $1 == "clear" ]]; then
         aBorrar=$2
     fi
     echo "$aBorrar" >'.clear'
+   
      pd=$(ps u | awk '$12== "./procesoDemonio.sh" {print $2}')
     if [ "$pd" == "" ]
     then
