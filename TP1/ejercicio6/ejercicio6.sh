@@ -53,7 +53,7 @@ if [ "$1" == "-h" -o "$1" == "-help" -o "$1" == "-?" ]; then
   direc="$1"
 
   declare -a arrDirectories
-  sudo chmod -R -f 777 "$direc" 
+ chmod -R -f 777 "$direc" 
  for SUBDIR in $(find "$direc" -type d   -links 2 -exec du -Sh {} + | sort -rh | head -n 10 | cut -f2); do
 
 if [ ${#arrDirectories[@]} -lt 10 ]; then
