@@ -1,4 +1,13 @@
 #!/bin/bash
+# Trabajo práctico N1 Ejercicio 1 (Primera entrega)
+# Script: ejercicio1.sh
+# Integrantes:
+# Annacondia Federico Agustin 38.435.945
+# Aranguri Jonathan Enrique   40.672.991	
+# Diaz Adrian Maximiliano     38.167.742
+# Icardi Fernando Javier      34.412.142
+# Rodriguez Gonzalo Martin    39.461.284
+
 # Declaracion de funciones de errores
 ErrorS()
 {
@@ -11,6 +20,7 @@ ErrorP()
 {
  echo "Error. $1 no es un archivo legible"
 }
+################MAIN####################
 # Si la cantidad de parametros es menor a 2, muestro el error S
 if test $# -lt 2; then
  ErrorS

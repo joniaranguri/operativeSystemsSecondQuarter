@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Trabajo práctico N1 Ejercicio 3 (Primera entrega)
+# Script: procesoDemonio.sh
+# Integrantes:
+# Annacondia Federico Agustin 38.435.945
+# Aranguri Jonathan Enrique   40.672.991	
+# Diaz Adrian Maximiliano     38.167.742
+# Icardi Fernando Javier      34.412.142
+# Rodriguez Gonzalo Martin    39.461.284
+
+
 directorioAHacerBackup=$1
 directorioDondeHacerBackup=$2
 cantidadDeBackups=0
@@ -53,6 +63,7 @@ function clear() {
     fi
 
 }
+################MAIN####################
 
 trap count SIGUSR1
 trap backup SIGUSR2
@@ -63,3 +74,4 @@ while true; do
     sleep "$3" &
     wait
 done
+###################FIN#################

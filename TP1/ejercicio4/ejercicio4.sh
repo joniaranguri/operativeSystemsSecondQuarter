@@ -1,4 +1,13 @@
 #!/bin/bash
+# Trabajo práctico N1 Ejercicio 4 (Primera entrega)
+# Script: ejercicio4.sh
+# Integrantes:
+# Annacondia Federico Agustin 38.435.945
+# Aranguri Jonathan Enrique   40.672.991	
+# Diaz Adrian Maximiliano     38.167.742
+# Icardi Fernando Javier      34.412.142
+# Rodriguez Gonzalo Martin    39.461.284
+################MAIN####################
 
 #funciones
 
@@ -7,6 +16,7 @@ function ayuda()
     echo "Script que realiza la contabilidad de lineas de còdigo de archivos dentro de un directorio indicado como parametro"
     echo "[Parametro 1 ]: Directorio utilizado para contabilizar lineas de còdigo"
     echo "[Parametro 2 ]: extensiòn de archivos buscados dentro de directorio"
+    
 }
 
 #directorios funcionan con espacios
@@ -18,6 +28,7 @@ if test $# -eq 1
 then
     if test $1 = "-h" || test $1 = "-?" || test $1 = "-help"
         then ayuda
+        exit
     else 
         echo "error de parametros, consulte la ayuda"
         exit 
@@ -36,9 +47,10 @@ fi
 if ! [ -d $1 ]
 then 
  echo "El directorio ingresado no es correcto"
+ exit
 fi
 
-# MAIN #
+###########################MAIN ####################
 cantidadArchivosAnalizados=0
 cantidadDeLineasTotales=0
 cantidadDeLineasComentadasTotales=0
@@ -90,3 +102,4 @@ echo "cantidad de lineas còdigo totales:"  $cantidadLineasDeCodigoTotales
 echo "cantidad de lineas comentadas totales:"  $cantidadDeLineasComentadasTotales
 echo "% Lineas de codigo: " $porcentajeLineasDeCodigoTotales "%"
 echo "% Lineas de comentadas: "$porcentajeLineasComentadasTotales "%"
+########################FIN############################

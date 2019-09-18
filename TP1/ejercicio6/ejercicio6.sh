@@ -1,4 +1,14 @@
 #!/bin/bash
+
+# Trabajo práctico N1 Ejercicio 6 (Primera entrega)
+# Script: ejercicio6.sh
+# Integrantes:
+# Annacondia Federico Agustin 38.435.945
+# Aranguri Jonathan Enrique   40.672.991	
+# Diaz Adrian Maximiliano     38.167.742
+# Icardi Fernando Javier      34.412.142
+# Rodriguez Gonzalo Martin    39.461.284
+
 IFS='
 '
 function mustSeeHelpAndExit(){
@@ -30,6 +40,7 @@ if [ $2 -eq 1 ]; then
 fi
 
 }
+################MAIN####################
  if [ $# -eq 0 ]; then
     echo "No se puede ejecutar el script sin parametros, consulte la ayuda"
     mustSeeHelpAndExit
@@ -43,7 +54,7 @@ if [ "$1" == "-h" -o "$1" == "-help" -o "$1" == "-?" ]; then
 
   declare -a arrDirectories
 
- for SUBDIR in $(find "$direc" -type d -links 2 -exec du -Sh {} + | sort -rh | head -n 10 | cut -f2); do
+ for SUBDIR in $(find "$direc" -type d   -links 2 -exec du -Sh {} + | sort -rh | head -n 10 | cut -f2); do
 
 if [ ${#arrDirectories[@]} -lt 10 ]; then
     arrDirectories=(${arrDirectories[*]} "$SUBDIR")
@@ -57,3 +68,4 @@ do
    size=$(du -h $item | cut -f1)
     echo "$item $size $countFiles arch."
 done
+########################FIN#################
