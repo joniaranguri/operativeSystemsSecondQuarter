@@ -70,8 +70,11 @@ trap backup SIGUSR2
 trap clear SIGTERM
 
 while true; do
-    backUp
-    sleep "$3" &
+    for ((i = 0; i < "$3"; i++))
+    do
+    sleep 1 &
     wait
+    done
+    backUp
 done
 ###################FIN#################
