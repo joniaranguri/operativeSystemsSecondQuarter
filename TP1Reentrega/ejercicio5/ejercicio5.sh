@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Trabajo práctico N1 Ejercicio 5 (Primera entrega)
+# Trabajo práctico N1 Ejercicio 5 (Segunda entrega)
 # Script: ejercicio5.sh
 # Integrantes:
 # Annacondia Federico Agustin 38.435.945
