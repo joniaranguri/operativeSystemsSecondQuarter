@@ -1,4 +1,14 @@
-<#
+
+
+# Trabajo práctico N2 Ejercicio 3 (Primera entrega)
+# Script: ejercicio3.sh
+# Integrantes:
+# Annacondia Federico Agustin 38.435.945
+# Aranguri Jonathan Enrique   40.672.991	
+# Diaz Adrian Maximiliano     38.167.742
+# Icardi Fernando Javier      34.412.142
+# Rodriguez Gonzalo Martin    39.461.284
+###########################AYUDA################################
 .SYNOPSIS
     Mueve archivos de un directorio a otro
 .DESCRIPTION
@@ -6,7 +16,7 @@
     y escriben en un log la fecha en la que se hizo el movimiento.
     Recibe como parametro la ruta del archivo CSV a procesar.
 #>
-
+#########################################MAIN############################################
 Param (
  [Parameter(Mandatory = $true)]
  [ValidatePattern(".*.csv")] # el parametro tiene que ser un archivo
