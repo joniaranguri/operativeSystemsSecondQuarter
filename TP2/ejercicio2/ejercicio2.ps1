@@ -8,6 +8,7 @@
 # Icardi Fernando Javier      34.412.142
 # Rodriguez Gonzalo Martin    39.461.284
 ###########################AYUDA################################
+
 <#
     .SYNOPSIS
 
@@ -36,12 +37,12 @@
 
 #>
 
-################MAIN####################
 Param (
  [Parameter(Mandatory = $true)]
  [ValidateRange(1, [int]::MaxValue)]
  [int] $Cantidad
 )
+################MAIN####################
 
 $hash = @{}   
 $listaproceso = Get-Process | Select-Object Name

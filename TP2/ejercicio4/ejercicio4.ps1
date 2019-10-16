@@ -22,11 +22,11 @@
     
     .EXAMPLE
     
-        Opcion 1) <DIRECTORIO_SCRIPT>\Ejercicio4.ps1 -Informar -ArchivoZip C:\directorio\archivoZip.zip
+        Opcion 1) <DIRECTORIO_SCRIPT>\ejercicio4.ps1 -Informar -ArchivoZip C:\directorio\archivoZip.zip
         
-        Opcion 2) <DIRECTORIO_SCRIPT>\Ejercicio4.ps1 -Comprimir -ArchivoZip C:\directorio\archivoZip.zip -Directorio  C:\directorio\DirectorioAComprimir
+        Opcion 2) <DIRECTORIO_SCRIPT>\ejercicio4.ps1 -Comprimir -ArchivoZip C:\directorio\archivoZip.zip -Directorio  C:\directorio\DirectorioAComprimir
         
-        Opcion 3) <DIRECTORIO_SCRIPT>\Ejercicio4.ps1 -Descomprimir -ArchivoZip C:\directorio\archivoZip.zip -Directorio C:\directorio\DirectorioADescomprimir
+        Opcion 3) <DIRECTORIO_SCRIPT>\ejercicio4.ps1 -Descomprimir -ArchivoZip C:\directorio\archivoZip.zip -Directorio C:\directorio\DirectorioADescomprimir
     
     .PARAMETER Informar
 
