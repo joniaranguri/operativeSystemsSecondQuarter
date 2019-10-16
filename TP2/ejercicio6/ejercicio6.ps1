@@ -1,4 +1,4 @@
-﻿
+
 # Trabajo práctico N2 Ejercicio 6 (Primera entrega)
 # Script: ejercicio6.sh
 # Integrantes:
@@ -25,13 +25,10 @@
         Opcion 1)  .\ejercicio6.ps1 -Entrada unaMatriz -Producto 4
         
         Opcion 2)   .\ejercicio6.ps1 -Entrada unaMatriz -Suma otraMatriz
-
    .PARAMETER Entrada
     	Indica el path del archivo de entrada, el cual contiene la matriz sobre la cual se va a realizar los procesos.
-
     .PARAMETER Producto 
     	Indica el numero con el que se realizara producto escalar a la matriz que viene en la entrada.
-
     .PARAMETER Suma
    	 Indica el path del archivo que contiene la matriz que se quiere sumar
 #>
@@ -68,24 +65,23 @@ for( $j=0;$j -lt $a[$i].count;$j++){
   }
   $result += "`r`n"
     }
+ $result | Out-File -FilePath  .\'Salida.'$Entrada
+ }
+ 
+function  scalar_product($a , $scalar) {
 
-    	
-    $result | Out-File -FilePath  .\'Salida.'$Entrada
-  
-
-    }
-
-function  scalar_product($a , $scalar){
-   $result= 0
-    Foreach($i in $a){
-    Foreach($val in $i){
-       #  Write-Host $val
-        $result+= $val*$scalar
-         }
-   
-    }
-
-    $result  | Out-File -FilePath .\'Salida.'$Entrada
+$result = ""
+ for($i=0;$i -lt $a.count;$i++) {
+for( $j=0;$j -lt $a[$i].count;$j++){
+   $suma= $a[$i][$j] * $scalar
+  if($j -ne 0){
+   $result+= '|'
+   }
+   $result+=$suma
+  }
+  $result += "`r`n"
+ }
+	$result | Out-File -FilePath  .\'Salida.'$Entrada
 }
 
 
