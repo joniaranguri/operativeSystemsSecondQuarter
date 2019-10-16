@@ -9,12 +9,14 @@
 # Icardi Fernando Javier      34.412.142
 # Rodriguez Gonzalo Martin    39.461.284
 ###########################AYUDA################################
-.SYNOPSIS
-    Mueve archivos de un directorio a otro
-.DESCRIPTION
-    Dado un archivo CSV mueve archivos del directorio de origen al directorio de destino 
-    y escriben en un log la fecha en la que se hizo el movimiento.
-    Recibe como parametro la ruta del archivo CSV a procesar.
+
+<# 
+    .SYNOPSIS
+        Mueve archivos de un directorio a otro
+    .DESCRIPTION
+        Dado un archivo CSV mueve archivos del directorio de origen al directorio de destino 
+        y escriben en un log la fecha en la que se hizo el movimiento.
+        Recibe como parametro la ruta del archivo CSV a procesar.
 #>
 #########################################MAIN############################################
 Param (
