@@ -8,8 +8,9 @@
 # Icardi Fernando Javier      34.412.142
 # Rodriguez Gonzalo Martin    39.461.284
 
-
 ################  Ayuda ############################# 
+
+
 
 <#
     .SYNOPSIS
@@ -22,11 +23,11 @@
     
     .EXAMPLE
     
-        Opcion 1) <DIRECTORIO_SCRIPT>\ejercicio4.ps1 -Informar -ArchivoZip C:\directorio\archivoZip.zip
+        Opcion 1) <DIRECTORIO_SCRIPT>\Ejercicio4.ps1 -Informar -ArchivoZip C:\directorio\archivoZip.zip
         
-        Opcion 2) <DIRECTORIO_SCRIPT>\ejercicio4.ps1 -Comprimir -ArchivoZip C:\directorio\archivoZip.zip -Directorio  C:\directorio\DirectorioAComprimir
+        Opcion 2) <DIRECTORIO_SCRIPT>\Ejercicio4.ps1 -Comprimir -ArchivoZip C:\directorio\archivoZip.zip -Directorio  C:\directorio\DirectorioAComprimir
         
-        Opcion 3) <DIRECTORIO_SCRIPT>\ejercicio4.ps1 -Descomprimir -ArchivoZip C:\directorio\archivoZip.zip -Directorio C:\directorio\DirectorioADescomprimir
+        Opcion 3) <DIRECTORIO_SCRIPT>\Ejercicio4.ps1 -Descomprimir -ArchivoZip C:\directorio\archivoZip.zip -Directorio C:\directorio\DirectorioADescomprimir
     
     .PARAMETER Informar
 
@@ -56,23 +57,23 @@
 
 
 Param(
-    [Parameter(ParameterSetName = 'Comprimir', Position = 0, Mandatory = $true)] 
+    [Parameter(ParameterSetName = 'Comprimir', Mandatory = $true)] 
     [switch]  $Comprimir,
     
-    [Parameter(ParameterSetName = 'Descomprimir', Position = 0, Mandatory = $true)] 
+    [Parameter(ParameterSetName = 'Descomprimir', Mandatory = $true)] 
     [switch]  $Descomprimir,
 
-    [Parameter(ParameterSetName = 'Informar', Position = 0, Mandatory = $true)] 
+    [Parameter(ParameterSetName = 'Informar', Mandatory = $true)] 
     [switch]  $Informar,
 
-    [Parameter(ParameterSetName = 'Comprimir', Position = 1, Mandatory = $true)]
-    [Parameter(ParameterSetName = 'Descomprimir', Position = 1, Mandatory = $true)]
-    [Parameter(ParameterSetName = 'Informar', Position = 1, Mandatory = $true)]
+    [Parameter(ParameterSetName = 'Comprimir', Mandatory = $true)]
+    [Parameter(ParameterSetName = 'Descomprimir', Mandatory = $true)]
+    [Parameter(ParameterSetName = 'Informar', Mandatory = $true)]
     [ValidateNotNullOrEmpty()] 
     [String]  $ArchivoZip,
     
-    [Parameter(ParameterSetName = 'Comprimir', Position = 2, Mandatory = $true)]
-    [Parameter(ParameterSetName = 'Descomprimir', Position = 2, Mandatory = $true)]
+    [Parameter(ParameterSetName = 'Comprimir', Mandatory = $true)]
+    [Parameter(ParameterSetName = 'Descomprimir', Mandatory = $true)]
     [ValidateNotNullOrEmpty()] 
     [String]  $Directorio
 )
@@ -81,14 +82,14 @@ Param(
 
 ############### Funciones ############################################
 
-function Validar-Directorio()
+function ValidarDirectorio()
 {
     Param ( [string] $directorio )
     $Valid = Test-Path -Path $directorio;
     return $Valid
     
 }
-function Validar-Archivo()
+function ValidarArchivo()
 {
     Param ( [string] $archivo )
     $Valid = Test-Path -Path $archivo;
@@ -100,22 +101,33 @@ function Validar-Archivo()
 function Comprimir()
 {
     Param ( [string] $directorio, [string] $archivoZip )
+
+        
+    $existe = ValidarArchivo $archivoZip
+
+    if($existe)
+    {
+        write-output "Ya se encuentra el archivo que desea crear"
+        return 
+    }
+
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
     [System.IO.Compression.ZipFile]::CreateFromDirectory($directorio,$archivoZip)
+    Write-Output "Se ha comprimido el archivo correctamente"
 }
 
 
 function Descomprimir()
 {
     Param ( [string] $directorio, [string] $archivoZip )
+	Add-Type -AssemblyName System.IO.Compression.FileSystem
     [System.IO.Compression.ZipFile]::ExtractToDirectory($archivoZip,$directorio)
 }
-
-
-#probar...
 
 function Informar()
 {
    Param ( [string] $archivoZip )
+   Add-Type -AssemblyName System.IO.Compression.FileSystem
    $zipFile = [System.IO.Compression.ZipFile]::OpenRead($archivoZip).Entries.Name
    
    Write-Output $zipFile
@@ -128,13 +140,19 @@ function Informar()
 
 If ($PSBoundParameters.ContainsKey('Informar')) {
 
+	If (!(ValidarArchivo $ArchivoZip) ){
+			Write-Output "no se encontro el archivo ingresado: " $ArchivoZip
+			return
+    }
+   Write-Output "el archivoZIP esta compuesto por: " 
    Informar $ArchivoZip
    return 
 }
 Else
 {
-    If (!Validar-Directorio $Directorio){
-        return
+    If ( ! (ValidarDirectorio $Directorio) ){
+        Write-Output "no se encontro el directorio ingresado: " $Directorio
+		return
     }
 
     If ($PSBoundParameters.ContainsKey('Comprimir')) {
@@ -145,11 +163,13 @@ Else
 
     If ($PSBoundParameters.ContainsKey('Descomprimir')) {
         
-       If (!Validar-Archivo $ArchivoZip){
-            return
+       If (!( ValidarArchivo $ArchivoZip) ){
+			Write-Output "no se encontro el archivo ingresado: " $ArchivoZip 
+			return
        }
 
        Descomprimir $Directorio $ArchivoZip
+       Write-Output "Se ha descomprimido el archivo correctamente"
        return 
     }
 } 
