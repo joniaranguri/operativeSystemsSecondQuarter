@@ -35,7 +35,7 @@ int  validarParametros(int arg,char *args []){
 //args[1] fifo consulta
 //args[2] fifo resultado
 //args[3] archivo
-if(arg<4){
+if(arg!=4){
     printf("\nCANTIDAD DE PARAMETROS INCORRECTOS,VERIFIQUE LA AYUDA\n");
     return 1;
 }
