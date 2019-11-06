@@ -10,6 +10,7 @@
 ################AYUDA###################
 
 
+
 <#
     .SYNOPSIS
     
@@ -67,7 +68,9 @@ for( $j=0;$j -lt $a[$i].count;$j++){
   }
   $result += "`r`n"
     }
- $result | Out-File -FilePath  .\'Salida.'$Entrada
+    $Entrada = $Entrada.Split("/")[-1]
+    $salida = "salida."+ $Entrada
+ $result | Out-File -FilePath  $salida
  }
  
 function  scalar_product($a , $scalar) {
@@ -83,7 +86,9 @@ for( $j=0;$j -lt $a[$i].count;$j++){
   }
   $result += "`r`n"
  }
-	$result | Out-File -FilePath  .\'Salida.'$Entrada
+ $Entrada = $Entrada.Split("/")[-1]
+ $salida = "salida."+ $Entrada
+$result | Out-File -FilePath  $salida
 }
 function ObtenerPathAbsoluto()
 {
@@ -94,6 +99,7 @@ function ObtenerPathAbsoluto()
     } else{
         $pathOut = Join-Path (Get-Location) $pathIn
     }
+    Write-Host "el path es:" $pathOut 
    return $pathOut
 }
 
@@ -109,6 +115,7 @@ foreach($line in Get-Content $Entrada) {
      $matFromFile += , $fila
 }
 $Suma = ObtenerPathAbsoluto $Suma
+
 if($Suma){
 $matToAdd = @()
 foreach($line in Get-Content $Suma) {
