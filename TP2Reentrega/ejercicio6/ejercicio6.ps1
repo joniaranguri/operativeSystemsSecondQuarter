@@ -1,6 +1,6 @@
 
-# Trabajo práctico N2 Ejercicio 6 (Primera entrega)
-# Script: ejercicio6.sh
+# Trabajo práctico N2 Ejercicio 6 (Segunda entrega)
+# Script: ejercicio6.ps1
 # Integrantes:
 # Annacondia Federico Agustin 38.435.945
 # Aranguri Jonathan Enrique   40.672.991	
@@ -99,6 +99,10 @@ function ObtenerPathAbsoluto()
     } else{
         $pathOut = Join-Path (Get-Location) $pathIn
     }
+<<<<<<< HEAD
+=======
+   
+>>>>>>> 40efc27d255f7b647de80d2d088f0267733ac141
    return $pathOut
 }
 
@@ -113,12 +117,19 @@ foreach($line in Get-Content $Entrada) {
       [double[]] $fila = @($line.split('|'))
      $matFromFile += , $fila
 }
+<<<<<<< HEAD
 if($matFromFile.count -lt 2){
 Write-Error "Ha ocurrido un error al obtener la matriz. Verifique que la matriz tenga al menos dos filas"
 [Environment]::Exit(1)
 }
 if($Suma){
 $Suma = ObtenerPathAbsoluto $Suma
+=======
+
+if($Suma){
+    $Suma = ObtenerPathAbsoluto $Suma
+    Write-Host "entro a suma"
+>>>>>>> 40efc27d255f7b647de80d2d088f0267733ac141
 $matToAdd = @()
 foreach($line in Get-Content $Suma) {
 
@@ -127,6 +138,7 @@ foreach($line in Get-Content $Suma) {
 }
 do_add $matFromFile $matToAdd
 }else{
+    Write-Host "entro a producto"
 scalar_product $matFromFile $Producto
 }
 Write-Host "El proceso se realizó correctamente"

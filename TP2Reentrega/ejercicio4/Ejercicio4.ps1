@@ -1,5 +1,15 @@
 ﻿
+# Trabajo práctico N2 Ejercicio 6 (Segunda entrega)
+# Script: ejercicio4.ps1
+# Integrantes:
+# Annacondia Federico Agustin 38.435.945
+# Aranguri Jonathan Enrique   40.672.991	
+# Diaz Adrian Maximiliano     38.167.742
+# Icardi Fernando Javier      34.412.142
+# Rodriguez Gonzalo Martin    39.461.284
 ################  Ayuda ############################# 
+
+
 
 <#
     .SYNOPSIS
