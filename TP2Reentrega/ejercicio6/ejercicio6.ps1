@@ -99,7 +99,6 @@ function ObtenerPathAbsoluto()
     } else{
         $pathOut = Join-Path (Get-Location) $pathIn
     }
-    Write-Host "el path es:" $pathOut 
    return $pathOut
 }
 
@@ -108,13 +107,16 @@ function ObtenerPathAbsoluto()
 ##leer archivo en una matriz
 
 $Entrada = ObtenerPathAbsoluto $Entrada
-$matFromFile = @()
+$matFromFile = @()  
 foreach($line in Get-Content $Entrada) {
 
       [double[]] $fila = @($line.split('|'))
      $matFromFile += , $fila
 }
-
+if($matFromFile.count -lt 2){
+Write-Error "Ha ocurrido un error al obtener la matriz. Verifique que la matriz tenga al menos dos filas"
+[Environment]::Exit(1)
+}
 if($Suma){
 $Suma = ObtenerPathAbsoluto $Suma
 $matToAdd = @()
