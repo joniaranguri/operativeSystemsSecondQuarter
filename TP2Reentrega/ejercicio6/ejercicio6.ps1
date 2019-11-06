@@ -69,7 +69,7 @@ for( $j=0;$j -lt $a[$i].count;$j++){
   $result += "`r`n"
     }
     $Entrada = $Entrada.Split("/")[-1]
-    $salida = "salida."+ $Entrada
+    $salida = "Salida."+ $Entrada
  $result | Out-File -FilePath  $salida
  }
  
@@ -87,7 +87,7 @@ for( $j=0;$j -lt $a[$i].count;$j++){
   $result += "`r`n"
  }
  $Entrada = $Entrada.Split("/")[-1]
- $salida = "salida."+ $Entrada
+ $salida = "Salida."+ $Entrada
 $result | Out-File -FilePath  $salida
 }
 function ObtenerPathAbsoluto()
