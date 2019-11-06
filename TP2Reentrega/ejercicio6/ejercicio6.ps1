@@ -99,7 +99,7 @@ function ObtenerPathAbsoluto()
     } else{
         $pathOut = Join-Path (Get-Location) $pathIn
     }
-    Write-Host "el path es:" $pathOut 
+   
    return $pathOut
 }
 
@@ -114,9 +114,10 @@ foreach($line in Get-Content $Entrada) {
       [double[]] $fila = @($line.split('|'))
      $matFromFile += , $fila
 }
-$Suma = ObtenerPathAbsoluto $Suma
 
 if($Suma){
+    $Suma = ObtenerPathAbsoluto $Suma
+    Write-Host "entro a suma"
 $matToAdd = @()
 foreach($line in Get-Content $Suma) {
 
@@ -125,6 +126,7 @@ foreach($line in Get-Content $Suma) {
 }
 do_add $matFromFile $matToAdd
 }else{
+    Write-Host "entro a producto"
 scalar_product $matFromFile $Producto
 }
 Write-Host "El proceso se realizó correctamente"
