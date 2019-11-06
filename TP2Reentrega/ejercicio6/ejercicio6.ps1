@@ -1,6 +1,6 @@
 
-# Trabajo práctico N2 Ejercicio 6 (Primera entrega)
-# Script: ejercicio6.sh
+# Trabajo práctico N2 Ejercicio 6 (Segunda entrega)
+# Script: ejercicio6.ps1
 # Integrantes:
 # Annacondia Federico Agustin 38.435.945
 # Aranguri Jonathan Enrique   40.672.991	
