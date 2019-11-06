@@ -99,10 +99,7 @@ function ObtenerPathAbsoluto()
     } else{
         $pathOut = Join-Path (Get-Location) $pathIn
     }
-<<<<<<< HEAD
-=======
-   
->>>>>>> 40efc27d255f7b647de80d2d088f0267733ac141
+
    return $pathOut
 }
 
@@ -117,19 +114,13 @@ foreach($line in Get-Content $Entrada) {
       [double[]] $fila = @($line.split('|'))
      $matFromFile += , $fila
 }
-<<<<<<< HEAD
 if($matFromFile.count -lt 2){
 Write-Error "Ha ocurrido un error al obtener la matriz. Verifique que la matriz tenga al menos dos filas"
 [Environment]::Exit(1)
 }
 if($Suma){
 $Suma = ObtenerPathAbsoluto $Suma
-=======
 
-if($Suma){
-    $Suma = ObtenerPathAbsoluto $Suma
-    Write-Host "entro a suma"
->>>>>>> 40efc27d255f7b647de80d2d088f0267733ac141
 $matToAdd = @()
 foreach($line in Get-Content $Suma) {
 
