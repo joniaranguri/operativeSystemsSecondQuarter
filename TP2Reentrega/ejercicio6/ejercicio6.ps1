@@ -114,9 +114,9 @@ foreach($line in Get-Content $Entrada) {
       [double[]] $fila = @($line.split('|'))
      $matFromFile += , $fila
 }
-$Suma = ObtenerPathAbsoluto $Suma
 
 if($Suma){
+$Suma = ObtenerPathAbsoluto $Suma
 $matToAdd = @()
 foreach($line in Get-Content $Suma) {
 
