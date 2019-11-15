@@ -1,3 +1,11 @@
+/* Trabajo práctico N3 Ejercicio 3 (Primera entrega)
+    Script: ejercicio3.c
+    Integrantes:
+         Aranguri Jonathan Enrique   40.672.991	
+         Diaz Adrian Maximiliano     38.167.742
+         Rodriguez Gonzalo Martin    39.461.284
+*/
+
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/wait.h>
@@ -6,6 +14,8 @@
 #include <ctype.h>
 #include <sys/stat.h>
 #include<string.h>
+
+
 int validarPathFifo(char * path  ){
     char finalPath[strlen(path)];
     char *barra = strrchr(path, '/');
@@ -59,7 +69,7 @@ return  0;
 
 void mostrarAyuda(){
     printf("\n Ejemplo de ejecucion:\n");
-    printf("\t ./demonio  ./articulos.txt ./fifoConsulta ./fifoResultado \n");
+    printf("\t ./ej3  ./articulos.txt ./fifoConsulta ./fifoResultado \n");
     return ;
 }
 void agregarSalida(char out[],char id[],char articulo[],char producto[],char marca[]){
@@ -93,6 +103,7 @@ int obtenerCantidadDeRegistros(char *path[]){
 }
 void filtrarArchivo(char *path[],char *filtro,int registros,char *salida)
 {
+    printf ("entrado a fildra");
     FILE *pf;
     int esId=strncmp("ID",filtro,2);
     int esProducto=strncmp("PRODUCTO",filtro,8);
@@ -104,11 +115,10 @@ void filtrarArchivo(char *path[],char *filtro,int registros,char *salida)
     char marca[100];
     char *igual=strchr(filtro,'=');
     char *buscado=igual;
-    //char salida[registros*500];
-
+  
     strcpy(salida," ");
     buscado++;
-        int cantCadenaOriginal=strlen(filtro);
+    int cantCadenaOriginal=strlen(filtro);
     int cantBuscado=strlen(igual);
 
     
@@ -139,14 +149,16 @@ void filtrarArchivo(char *path[],char *filtro,int registros,char *salida)
        
       
         if(esId==0 && strcmp(id,buscado)==0 ){   
-          
+          printf("filtro:ID");
             agregarSalida(salida,id,articulo,producto,marca);   
            
         }
         else if(esMarca==0 && strcmp(marca,buscado)==0){
+            printf("filtro:Marca");
             agregarSalida(salida,id,articulo,producto,marca);   
         }
         else if(esProducto==0 && strcmp(producto,buscado)==0){
+            printf("filtro:Producto");
              agregarSalida(salida,id,articulo,producto,marca);   
         }
         
@@ -165,7 +177,10 @@ int main(int arg, char *args[])
     int x;
     int num = arg;
     
-   
+    // args[1] archivo
+    // args[2] fifoConsulta
+    //args[3] fifoResultado
+    
     if(arg== 2 && (strcmp(args[1],"-h")==0 ||strcmp(args[1],"-?")==0 || strcmp(args[1],"-help")==0)  ){
       
         mostrarAyuda();
@@ -185,22 +200,25 @@ int main(int arg, char *args[])
     {
         return 0;
     }
+    printf ("sd");
 // crear fifos
-    mkfifo(args[2], 0666);
-    mkfifo(args[3], 0666); 
+    mkfifo(args[2], 0666); //fifo consulta
+    mkfifo(args[3], 0666); //fifo resultado
+    
     //si es el hijo se queda ejecutando
      while(1){
+    
         // abrir fifos 
     int fd = open(args[2], O_RDONLY); 
      
-   // printf("*******************SE CREO EL SEGUNDO FIFO*******************");
+  
     int fds = open(args[3], O_WRONLY);
-   // printf("****************************SE ABRIO EL SEGUNDO FIFO********************");
+  
    
     char filtro[100];
     int bytes = -1;
     printf("\n*******************ESPERANDO CONSULTA*******************\n");
-    bytes = read(fd, filtro, sizeof(char)*1000); // leer fifo
+    bytes = read(fd, filtro, sizeof(filtro)); // leer fifo
     printf("\n ****** LLEGO LA CONSULTA********\n");
     
     int cantCaracteres=strlen(filtro);
@@ -214,18 +232,18 @@ int main(int arg, char *args[])
     }
 
 
-  //  printf("filtro:%s",filtro);
+  
     int registros=obtenerCantidadDeRegistros(&args[1]);
-   // printf("cant registros: %d",registros);
+   
       char salida[registros*500];
-
+   
     filtrarArchivo(&args[1],filtro,registros,salida);
-    //escribirFifoSalida()
+    
     printf("\n******ARCHIVO FILTRADO*******\n");
   
-    //printf("\n *****  size de salida: %ld",sizeof(salida));
-    write(fds, salida, sizeof(salida));
-    //printf("************************SE ESCRIBIO EN EL SEGUNDO FIFO*******************");
+
+    write(fds, salida, sizeof(salida)+1);
+  
     close(fds);
     close(fd);
     }
