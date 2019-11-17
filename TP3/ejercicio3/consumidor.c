@@ -72,9 +72,9 @@ int main (int arg , char * args[]){
         int registros=obtenerCantidadDeRegistros(&args[1]);
        
     char entrada[registros*100];
-    printf (" cantidad de registros : %d ", registros);
+   
     int bytes=-1;
-     bytes= read(fd,entrada,sizeof(entrada));   // leer fifo
+     bytes= read(fd,entrada,sizeof(entrada)+1);   // leer fifo
         printf("\n************SALIDA****\n");
     
             

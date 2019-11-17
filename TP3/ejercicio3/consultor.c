@@ -42,14 +42,16 @@ int main (int arg , char * args[]){
    
     int cantCaracteres= strlen(entrada);
    
+   
     if(arg==2 && (strcmp(args[1],"-h")==0 || strcmp(args[1],"-help")==0 || strcmp(args[1],"-?")==0)){
         mostrarAyuda();
         return 0;
     }
    if(validarParametros(arg,args)==1)
    return 1;
+  
     int fd=open(args[2],O_WRONLY);
     write(fd,args[1],sizeof(char)*(cantCaracteres+1));
-   
+
     return 0;
     }
