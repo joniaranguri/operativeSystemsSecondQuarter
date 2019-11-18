@@ -1,3 +1,11 @@
+/* Trabajo práctico N3 Ejercicio 3 (Primera entrega)
+    Script: ejercicio3.c
+    Integrantes:
+         Aranguri Jonathan Enrique   40.672.991	
+         Diaz Adrian Maximiliano     38.167.742
+         Rodriguez Gonzalo Martin    39.461.284
+*/
+
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/wait.h>
@@ -17,8 +25,8 @@ int validarParametros(int arg, char *args[]){
         return 1;
     }
      if (stat(args[2], &myFile) < 0) {
-        printf("\nno se encontro el fifo: %s \n", args[1]);
-        printf("\n Debe ejecutar el proceso demonio primero\n");
+        printf("\nno se encontro el fifo: %s \n", args[2]);
+        printf("\n Debe ejecutar el proceso ej3 primero\n");
         return 1;
     }
     
@@ -58,17 +66,18 @@ int main (int arg , char * args[]){
     return 1;
     
 
-    int fd= open(args[1],O_RDONLY); // abrir fifo para lectura
+    int fd= open(args[2],O_RDONLY); // abrir fifo para lectura
         
         
         int registros=obtenerCantidadDeRegistros(&args[1]);
        
-    char entrada[registros*500];
+    char entrada[registros*100];
+   
     int bytes=-1;
-     bytes= read(fd,entrada,sizeof(entrada));   // leer fifo
+     bytes= read(fd,entrada,sizeof(entrada)+1);   // leer fifo
         printf("\n************SALIDA****\n");
-  //  close(fd);
-            //  printf("soy el hijo y  es %d ", num);
+    
+            
          printf("\n %s\n ",entrada); 
 
 return 0;
