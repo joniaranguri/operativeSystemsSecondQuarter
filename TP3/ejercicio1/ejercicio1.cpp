@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <stdarg.h>
 #include <signal.h>
+#include <cstring>
 
 pid_t hijo1();
 
@@ -50,16 +51,12 @@ void mostrarAyuda(){
 
 int main(int arg, char *args[]) {
 
-    char *entrada = args[1];
-
-    int cantCaracteres = strlen(entrada);
-
     if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-help") == 0 || strcmp(args[1], "-?") == 0)) {
         mostrarAyuda();
         return 0;
     }
 
-    sem = sem_open("semaphore", O_CREAT, 0600, 0);
+    sem = sem_open("semaforo", O_TRUNC, 0600, 0);
 
     pid_t pid1 = hijo1();
     pid_t pid2;
@@ -75,6 +72,8 @@ int main(int arg, char *args[]) {
     esperarYSalir(2, pid1, pid2);
 
     sem_close(sem);
+    sem_unlink("semaforo");
+
     return 0;
 }
 
@@ -201,7 +200,7 @@ pid_t bisnieto5() {
 }
 
 void esperarYSalir(int count, ...) {
-    sem = sem_open("semaphore", O_CREAT, 0600, 0);
+    sem = sem_open("semaforo", O_CREAT, 0600, 0);
 
     sem_wait(sem);
 
