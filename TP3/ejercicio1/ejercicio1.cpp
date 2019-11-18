@@ -1,3 +1,11 @@
+/* Trabajo práctico N3 Ejercicio 1 (Primera entrega)
+    Script: ejercicio1.cpp
+    Integrantes:
+         Aranguri Jonathan Enrique   40.672.991
+         Diaz Adrian Maximiliano     38.167.742
+         Rodriguez Gonzalo Martin    39.461.284
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -7,7 +15,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdarg.h>
-#include <cstring>
+#include <signal.h>
 
 pid_t hijo1();
 
@@ -36,9 +44,9 @@ void esperarYSalir(int count, ...);
 int status;
 sem_t *sem;
 
-int main(int args, char *argv[]) {
+int main() {
 
-    sem = sem_open("sem", O_CREAT, 0600, 0);
+    sem = sem_open("semaphore", O_CREAT, 0600, 0);
 
     pid_t pid1 = hijo1();
     pid_t pid2;
@@ -49,10 +57,11 @@ int main(int args, char *argv[]) {
 
     printf("ingrese una tecla para finalizar\n");
     getchar();
-    sem_post(sem);
 
+    sem_post(sem);
     esperarYSalir(2, pid1, pid2);
 
+    sem_close(sem);
     return 0;
 }
 
@@ -180,7 +189,7 @@ pid_t bisnieto5() {
 }
 
 void esperarYSalir(int count, ...) {
-    sem = sem_open("sem", O_CREAT, 0600, 0);
+    sem = sem_open("semaphore", O_CREAT, 0600, 0);
 
     sem_wait(sem);
 
