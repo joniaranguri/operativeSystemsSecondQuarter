@@ -51,7 +51,7 @@ int main (int arg , char * args[]){
    return 1;
   
     int fd=open(args[2],O_WRONLY);
-    write(fd,args[1],sizeof(char)*(cantCaracteres+1));
+    write(fd,args[1],cantCaracteres+1);
 
     return 0;
     }

@@ -108,6 +108,9 @@ void filtrarArchivo(char *path[],char *filtro,int registros,char *salida)
     int esId=strncmp("ID",filtro,2);
     int esProducto=strncmp("PRODUCTO",filtro,8);
     int esMarca=strncmp("MARCA",filtro,5);
+   // printf("esMarca: %d",esMarca);
+    int j= 0;
+   printf("valor j=%d\n",j);
     char id[100];
     char articulo[100];
     
@@ -120,7 +123,7 @@ void filtrarArchivo(char *path[],char *filtro,int registros,char *salida)
     buscado++;
     int cantCadenaOriginal=strlen(filtro);
     int cantBuscado=strlen(igual);
-
+    printf("buscado: %s\n",buscado);
     
     printf("\nFILTRO: %s\n",filtro);
     pf = fopen(*path, "r");
@@ -130,30 +133,42 @@ void filtrarArchivo(char *path[],char *filtro,int registros,char *salida)
         printf("\nno se  encontro el archivo %s\n",*path);
         exit(0);
     }
- //   int j= 1;
+   strcpy(id," ");
+        strcpy(articulo," ");
+        strcpy(producto," ");
+        strcpy(marca," ");
 
-   
     while (!feof(pf))
     {
        
-       // j++;
-        fscanf(pf, " %[^;]", id);
-        
+        j++;
+        fflush(stdin);
+        fscanf(pf," %[^;]", id);
+    
+      //  printf("id: %s",id);
 
-        fscanf(pf, " ;%[^;]", articulo);
+        fflush(stdin);
+        fscanf(pf," ;%[^;]", articulo);
+      //  printf("articulo: %s",articulo);
        
-        fscanf(pf, " ;%[^;]", producto);
-        
+        fflush(stdin);
+        fscanf(pf," ;%[^;]", producto);
+       // printf("producto: %s",producto);
 
-        fscanf(pf, " ;%[^\n]", marca);
-       
+        fflush(stdin);
+        fscanf(pf," ;%[^\n]", marca);
+        printf("id: %s articulo: %s producto:%s marca: %s\n",id,articulo,producto,marca);
+
+      // printf(" registro:%d marca leida: %s",j,marca);
       
+        int valorComparacion=strcmp(marca,buscado);
+       // printf("marcaLeida:%s marcaBuscada:%s resultadoComparacion:%d\n",marca,buscado,valorComparacion);
         if(esId==0 && strcmp(id,buscado)==0 ){   
       
             agregarSalida(salida,id,articulo,producto,marca);   
            
         }
-        else if(esMarca==0 && strcmp(marca,buscado)==0){
+        else if(esMarca==0 && valorComparacion==0){
     
             agregarSalida(salida,id,articulo,producto,marca);   
         }
@@ -191,6 +206,7 @@ int main(int arg, char *args[])
     if(res==1){
         return 0;
     }
+    /*
     // creo un proceso hijo
     x = fork();
     //si es el padre termino, asi el hijo queda como demonio
@@ -199,7 +215,7 @@ int main(int arg, char *args[])
     if (x > 0)
     {
         return 0;
-    }
+    }*/
     
    
 // crear fifos
@@ -219,7 +235,7 @@ int main(int arg, char *args[])
     char filtro[100];
     int bytes = -1;
     printf("\n*******************ESPERANDO CONSULTA*******************\n");
-    bytes = read(fd, filtro, sizeof(filtro)); // leer fifo
+    bytes = read(fd, filtro,sizeof(filtro)); // leer fifo
     printf("\n ****** LLEGO LA CONSULTA********\n");
     
     int cantCaracteres=strlen(filtro);
@@ -236,14 +252,14 @@ int main(int arg, char *args[])
   
     int registros=obtenerCantidadDeRegistros(&args[1]);
    
-      char salida[registros*100];
+      char salida[registros*40];
+  printf("sizeofSalida: %ld",sizeof(salida));
    
     filtrarArchivo(&args[1],filtro,registros,salida);
     printf("\n******ARCHIVO FILTRADO*******\n");
     
-  
 
-    write(fds, salida, sizeof(salida));
+    write(fds, salida, sizeof(salida)+1);
  
     close(fds);
     close(fd);
