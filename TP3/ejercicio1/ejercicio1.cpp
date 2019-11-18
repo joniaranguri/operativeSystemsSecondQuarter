@@ -114,13 +114,12 @@ pid_t nieto2() {
     pid_t pid = fork();
 
     if (soyHijo(pid)) {
-        printf("PID: %d PPID: %d Parentesco-Tipo: [nieto]-[normal]\n", getpid(), getppid());
+        printf("PID: %d PPID: %d Parentesco-Tipo: [nieto]-[zombie]\n", getpid(), getppid());
         pid_t pid2 = bisnieto3();
         if (!soyHijo(pid2)) {
             pid_t pid3 = bisnieto4();
-            esperarYSalir(1, pid3);
+            exit(1); //esperarYSalir(2, pid2, pid3);
         }
-        esperarYSalir(1, pid2);
     }
 
     return pid;
@@ -130,9 +129,9 @@ pid_t nieto3() {
     pid_t pid = fork();
 
     if (soyHijo(pid)) {
-        printf("PID: %d PPID: %d Parentesco-Tipo: [nieto]-[normal]\n", getpid(), getppid());
+        printf("PID: %d PPID: %d Parentesco-Tipo: [nieto]-[zombie]\n", getpid(), getppid());
         pid_t pid2 = bisnieto5();
-        esperarYSalir(1, pid2);
+        exit(1);
     }
 
     return pid;
@@ -162,7 +161,7 @@ pid_t bisnieto3() {
     pid_t pid = fork();
 
     if (soyHijo(pid)) {
-        printf("PID: %d PPID: %d Parentesco-Tipo: [bisnieto]-[normal]\n", getpid(), getppid());
+        printf("PID: %d PPID: %d Parentesco-Tipo: [bisnieto]-[demonio]\n", getpid(), getppid());
     }
 
     return pid;
@@ -172,7 +171,7 @@ pid_t bisnieto4() {
     pid_t pid = fork();
 
     if (soyHijo(pid)) {
-        printf("PID: %d PPID: %d Parentesco-Tipo: [bisnieto]-[normal]\n", getpid(), getppid());
+        printf("PID: %d PPID: %d Parentesco-Tipo: [bisnieto]-[demonio]\n", getpid(), getppid());
     }
 
     return pid;
@@ -182,7 +181,7 @@ pid_t bisnieto5() {
     pid_t pid = fork();
 
     if (soyHijo(pid)) {
-        printf("PID: %d PPID: %d Parentesco-Tipo: [bisnieto]-[normal]\n", getpid(), getppid());
+        printf("PID: %d PPID: %d Parentesco-Tipo: [bisnieto]-[demonio]\n", getpid(), getppid());
     }
 
     return pid;
