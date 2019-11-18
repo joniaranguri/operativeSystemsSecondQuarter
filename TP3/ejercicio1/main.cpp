@@ -10,23 +10,33 @@
 #include <cstring>
 
 pid_t hijo1();
+
 pid_t hijo2();
+
 pid_t nieto1();
+
 pid_t nieto2();
+
 pid_t nieto3();
+
 pid_t bisnieto1();
+
 pid_t bisnieto2();
+
 pid_t bisnieto3();
+
 pid_t bisnieto4();
+
 pid_t bisnieto5();
+
 bool soyHijo(int);
 
 void esperarYSalir(int count, ...);
 
 int status;
-sem_t* sem;
+sem_t *sem;
 
-int main(int args, char * argv[]) {
+int main(int args, char *argv[]) {
 
     sem = sem_open("sem", O_CREAT, 0600, 0);
 
@@ -95,14 +105,14 @@ pid_t nieto2() {
     pid_t pid = fork();
 
     if (soyHijo(pid)) {
-            printf("PID: %d PPID: %d Parentesco-Tipo: [nieto]-[normal]\n", getpid(), getppid());
-            pid_t pid2 = bisnieto3();
-            if (!soyHijo(pid2)) {
-                pid_t pid3 = bisnieto4();
-                esperarYSalir(1, pid3);
-            }
-            esperarYSalir(1, pid2);
+        printf("PID: %d PPID: %d Parentesco-Tipo: [nieto]-[normal]\n", getpid(), getppid());
+        pid_t pid2 = bisnieto3();
+        if (!soyHijo(pid2)) {
+            pid_t pid3 = bisnieto4();
+            esperarYSalir(1, pid3);
         }
+        esperarYSalir(1, pid2);
+    }
 
     return pid;
 }
