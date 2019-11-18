@@ -122,8 +122,6 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida) {
 
     strcpy(salida, " ");
     buscado++;
-    int cantCadenaOriginal = strlen(filtro);
-    int cantBuscado = strlen(igual);
     printf("buscado: %s\n", buscado);
 
     printf("\nFILTRO: %s\n", filtro);
@@ -155,18 +153,17 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida) {
         // printf("producto: %s",producto);
 
         fflush(stdin);
-        fscanf(pf, " ;%[^\n]", marca);
+        fscanf(pf, " ;%[^\r|\n]", marca);
         printf("id: %s articulo: %s producto:%s marca: %s\n", id, articulo, producto, marca);
 
         // printf(" registro:%d marca leida: %s",j,marca);
 
-        int valorComparacion = strcmp(marca, buscado);
         // printf("marcaLeida:%s marcaBuscada:%s resultadoComparacion:%d\n",marca,buscado,valorComparacion);
         if (esId == 0 && strcmp(id, buscado) == 0) {
 
             agregarSalida(salida, id, articulo, producto, marca);
 
-        } else if (esMarca == 0 && valorComparacion == 0) {
+        } else if (esMarca == 0 && strcmp(marca, buscado) == 0) {
 
             agregarSalida(salida, id, articulo, producto, marca);
         } else if (esProducto == 0 && strcmp(producto, buscado) == 0) {
