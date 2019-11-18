@@ -1,24 +1,42 @@
 #include <stdio.h>
-#include <stddef.h>
-#include <semaphore.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <sys/mman.h>
-#include <zconf.h>
-#include <stdint.h>
 
-int main(int arg, char *args[]) {
+#define FILEPATH "/tmp/mmapped.bin"
+#define NUMINTS  (1000)
+#define FILESIZE (NUMINTS * sizeof(int))
+
+int main(int argc, char *argv[]) {
+    int i;
     int fd;
-    size_t tam = sizeof(int);
-    sem_t *sem = sem_open("semaforo", O_CREAT, 0600, 0);
+    int *map;  /* mmapped array of int's */
 
-    fd = shm_open("/nombre", O_CREAT, 0600);
-    ftruncate(fd, tam);
-    //mem es la memoria compartida, si cambio su valor estoy escribiendo en
-    //la mem compartida, si veo su valor estoy leyendo de memoria compartida
-    uint8_t *mem = mmap(NULL, tam, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, fd, 0);
-    sem_wait(sem); // P()
-    printf("valor: %d", *mem);
-    sem_close(sem);
-    sem_unlink("semaforo");
+    fd = open(FILEPATH, O_RDONLY);
+    if (fd == -1) {
+        perror("Error opening file for reading");
+        exit(EXIT_FAILURE);
+    }
+
+    map = mmap(0, FILESIZE, PROT_READ, MAP_SHARED, fd, 0);
+    if (map == MAP_FAILED) {
+        close(fd);
+        perror("Error mmapping the file");
+        exit(EXIT_FAILURE);
+    }
+
+    /* Read the file int-by-int from the mmap
+     */
+    for (i = 1; i <= NUMINTS; ++i) {
+        printf("%d: %d\n", i, map[i]);
+    }
+
+    if (munmap(map, FILESIZE) == -1) {
+        perror("Error un-mmapping the file");
+    }
     close(fd);
-
+    return 0;
 }
