@@ -44,7 +44,20 @@ void esperarYSalir(int count, ...);
 int status;
 sem_t *sem;
 
-int main() {
+void mostrarAyuda(){
+    printf("\n Ejemplo de ejecucion: \n ./ejercicio1");
+}
+
+int main(int arg, char *args[]) {
+
+    char *entrada = args[1];
+
+    int cantCaracteres = strlen(entrada);
+
+    if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-help") == 0 || strcmp(args[1], "-?") == 0)) {
+        mostrarAyuda();
+        return 0;
+    }
 
     sem = sem_open("semaphore", O_CREAT, 0600, 0);
 
