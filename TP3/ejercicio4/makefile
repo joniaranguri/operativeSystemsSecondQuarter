@@ -1,10 +1,10 @@
 all: prc1 prc2
 prc1:  proceso1.o
-	gcc -o prc1 proceso1.o -lrt
+	gcc -o prc1 proceso1.o -lpthread
 proceso1.o:  proceso1.c
 	gcc -c proceso1.c 
 prc2:  proceso2.o
-	gcc -o prc2 proceso2.o  -lrt
+	gcc -o prc2 proceso2.o -lpthread
 proceso2.o:  proceso2.c
 	gcc -c proceso2.c 
 clean:
