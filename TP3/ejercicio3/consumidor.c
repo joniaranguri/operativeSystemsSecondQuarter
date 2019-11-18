@@ -71,7 +71,7 @@ int main (int arg , char * args[]){
         
         int registros=obtenerCantidadDeRegistros(&args[1]);
        
-    char entrada[registros*100];
+    char entrada[registros*40];
    
     int bytes=-1;
      bytes= read(fd,entrada,sizeof(entrada)+1);   // leer fifo
