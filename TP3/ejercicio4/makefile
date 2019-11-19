@@ -1,11 +1,15 @@
-all: prc1 prc2
-prc1:  proceso1.o
-	gcc -o prc1 proceso1.o -lpthread
-proceso1.o:  proceso1.c
-	gcc -c proceso1.c 
-prc2:  proceso2.o
-	gcc -o prc2 proceso2.o -lpthread
-proceso2.o:  proceso2.c
-	gcc -c proceso2.c 
+all: ejercicio3 consultar consumir
+ejercicio3:  ejercicio3.o
+	gcc -o ej3 ejercicio3.o -lpthread -lrt
+ejercicio3.o:  ejercicio3.c
+	gcc -c ejercicio3.c 
+consultar: consultor.o
+	gcc -o consultar consultor.o -lpthread -lrt
+consultor.o: consultor.c 
+	gcc -c consultor.c 
+consumir: consumidor.o
+	gcc -o consumir consumidor.o -lpthread -lrt
+consumidor.o: consumidor.c 
+	gcc -c consumidor.c 
 clean:
 	rm *.o
