@@ -1,12 +1,6 @@
-/* Trabajo práctico N5 Ejercicio 5 (Primera entrega)
-    Script: ejercicio5.c
-    Integrantes:
-         Aranguri Jonathan Enrique   40.672.991	
-         Diaz Adrian Maximiliano     38.167.742
-         Rodriguez Gonzalo Martin    39.461.284
-*/
-/* Trabajo práctico N5 Ejercicio 5 (Primera entrega)
-    Script: ejercicio5.c
+
+/* Trabajo práctico N3 Ejercicio 5 (Primera entrega)
+    Script: consultor.c
     Integrantes:
          Aranguri Jonathan Enrique   40.672.991	
          Diaz Adrian Maximiliano     38.167.742

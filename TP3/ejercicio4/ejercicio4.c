@@ -1,5 +1,5 @@
-/* Trabajo práctico N3 Ejercicio 3 (Primera entrega)
-    Script: ejercicio3.c
+/* Trabajo práctico N3 Ejercicio 4 (Primera entrega)
+    Script: ejercicio4.c
     Integrantes:
          Aranguri Jonathan Enrique   40.672.991	
          Diaz Adrian Maximiliano     38.167.742
@@ -42,7 +42,7 @@ int validarParametros(int arg, char *args[])
 void mostrarAyuda()
 {
     printf("\n Ejemplo de ejecucion:\n");
-    printf("\t ./ej3  ./articulos.txt  \n");
+    printf("\t ./ej4  ./articulos.txt  \n");
     return;
 }
 
@@ -185,7 +185,7 @@ int main(int arg, char *args[])
     {
         return 0;
     }
-    /*
+    
     // creo un proceso hijo
     x = fork();
     //si es el padre termino, asi el hijo queda como demonio
@@ -194,7 +194,7 @@ int main(int arg, char *args[])
     if (x > 0)
     {
         return 0;
-    }*/
+    }
 
     //si es el hijo se queda ejecutando
     while (1)

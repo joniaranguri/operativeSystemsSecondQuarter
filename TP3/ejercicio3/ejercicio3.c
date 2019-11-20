@@ -200,7 +200,7 @@ int main(int arg, char *args[]) {
     if (res == 1) {
         return 0;
     }
-    /*
+    
     // creo un proceso hijo
     x = fork();
     //si es el padre termino, asi el hijo queda como demonio
@@ -209,7 +209,7 @@ int main(int arg, char *args[]) {
     if (x > 0)
     {
         return 0;
-    }*/
+    }
 
 
 // crear fifos

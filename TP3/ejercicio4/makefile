@@ -1,8 +1,8 @@
-all: ejercicio3 consultar consumir
-ejercicio3:  ejercicio3.o
-	gcc -o ej3 ejercicio3.o -lpthread -lrt
-ejercicio3.o:  ejercicio3.c
-	gcc -c ejercicio3.c 
+all: ejercicio4 consultar consumir
+ejercicio4:  ejercicio4.o
+	gcc -o ej4 ejercicio4.o -lpthread -lrt
+ejercicio4.o:  ejercicio4.c
+	gcc -c ejercicio4.c 
 consultar: consultor.o
 	gcc -o consultar consultor.o -lpthread -lrt
 consultor.o: consultor.c 

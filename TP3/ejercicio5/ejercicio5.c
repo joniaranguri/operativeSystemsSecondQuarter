@@ -1,5 +1,5 @@
 /* Trabajo práctico N3 Ejercicio 3 (Primera entrega)
-    Script: ejercicio3.c
+    Script: ejercicio5.c
     Integrantes:
          Aranguri Jonathan Enrique   40.672.991	
          Diaz Adrian Maximiliano     38.167.742
@@ -18,7 +18,7 @@
 
 void mostrarAyuda()
 {
-    printf("\n Ejemplo de ejecucion: \n ./consultar ./archivoProductos ./archivoConf ");
+    printf("\n Ejemplo de ejecucion: \n ./ej5 ./archivoProductos ./archivoConf ");
 }
 void agregarSalida(char out[], char id[], char articulo[], char producto[], char marca[]) {
     strcat(out, id);
