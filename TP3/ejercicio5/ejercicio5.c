@@ -14,6 +14,8 @@
 #include <ctype.h>
 #include <string.h>
 #include <unistd.h>
+ #include <sys/stat.h>
+
 void mostrarAyuda()
 {
     printf("\n Ejemplo de ejecucion: \n ./consultar ./archivoProductos ./archivoConf ");
