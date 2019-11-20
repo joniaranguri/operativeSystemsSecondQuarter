@@ -13,6 +13,11 @@
 #include <sys/socket.h>
 #include <ctype.h>
 #include <string.h>
+#include <unistd.h>
+void mostrarAyuda()
+{
+    printf("\n Ejemplo de ejecucion: \n ./consultar ./archivoProductos ./archivoConf ");
+}
 void agregarSalida(char out[], char id[], char articulo[], char producto[], char marca[]) {
     strcat(out, id);
     strcat(out, ";");
@@ -131,6 +136,13 @@ int obtenerPuerto(){
 }
 
 int main(int arg,char *args[]) {
+	    if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0)) {
+
+        mostrarAyuda();
+
+        return 0;
+    }
+
 	struct sockaddr_in direccionServidor;
 	direccionServidor.sin_family = AF_INET;
 	direccionServidor.sin_addr.s_addr = INADDR_ANY;

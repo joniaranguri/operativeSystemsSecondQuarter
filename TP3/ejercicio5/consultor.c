@@ -18,6 +18,8 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <unistd.h>
+
 
 int validarParametros(int arg, char *args[])
 {
@@ -31,7 +33,7 @@ int validarParametros(int arg, char *args[])
 
 void mostrarAyuda()
 {
-    printf("\n Ejemplo de ejecucion: \n ./consultar producto=P.DULCE");
+    printf("\n Ejemplo de ejecucion: \n ./consultar \n Luego escribir las consultas con el siguiente formato:\n producto=P.DULCE");
 }
 int obtenerPuerto(){
     int puerto=0;
@@ -43,6 +45,12 @@ int obtenerPuerto(){
 }
 
 int main(int arg, char *args[]) {
+     if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0)) {
+
+        mostrarAyuda();
+
+        return 0;
+    }
     const char * END_REQUEST = "QUIT";
 	struct sockaddr_in direcciónServidor;
 	direcciónServidor.sin_family = AF_INET;
