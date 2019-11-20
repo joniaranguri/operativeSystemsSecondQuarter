@@ -29,6 +29,32 @@ void agregarSalida(char out[], char id[], char articulo[], char producto[], char
     strcat(out, "\n");
     return;
 }
+int validarParametros(int arg, char *args[]) {
+//args[0] nombre de script
+//args[1] archivo de productos
+//args[2] archivo de configuracion
+
+    if (arg < 2 || arg >3) {
+        printf("\nCANTIDAD DE PARAMETROS INCORRECTOS,VERIFIQUE LA AYUDA\n");
+        return 1;
+    }
+
+    struct stat myFile;
+    if (stat(args[1], &myFile) < 0) {
+        printf("\nno se encontro el archivo %s\n", args[1]);
+        return 1;
+    }
+
+if(arg == 3){
+	if (stat(args[2], &myFile) < 0) {
+        printf("\nno se encontro el archivo %s\n", args[2]);
+        return 1;
+    }
+}
+
+    return 0;
+
+}
 int obtenerCantidadDeRegistros(char *path[]) {
     FILE *pf;
     int cantfilas = 0;
