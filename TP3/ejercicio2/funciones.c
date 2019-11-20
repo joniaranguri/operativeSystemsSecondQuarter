@@ -1,5 +1,5 @@
 /* Trabajo práctico N3 Ejercicio 2 (Primera entrega)
-    Script: ejercicio2.c
+    Script: funciones.c
     Integrantes:
          Aranguri Jonathan Enrique   40.672.991	
          Diaz Adrian Maximiliano     38.167.742
