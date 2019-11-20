@@ -56,14 +56,22 @@ int main(int arg, char *args[]) {
 		return 1;
 	}
         char mensaje[1000];
-        char respuesta[1000];
 		scanf("%s", mensaje);
 	    while (strcmp(mensaje, END_REQUEST) != 0) {
 
       send(cliente, mensaje, strlen(mensaje), 0);
       printf("\nSE ENVIO LA CONSULTA\n");
 
-     int bytesRecibidos = recv(cliente, respuesta, 1000, 0);
+int received_int = 0;
+
+int return_status = read(cliente, &received_int, sizeof(received_int));
+if (return_status > 0) {
+   fprintf(stdout, "Received int = %d\n", ntohl(received_int));
+}
+
+        char respuesta[ntohl(received_int)];
+
+     int bytesRecibidos = recv(cliente, respuesta, ntohl(received_int), 0);
 		respuesta[bytesRecibidos] = '\0';
 		printf("%s\n", respuesta);     
                    

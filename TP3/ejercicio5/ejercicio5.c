@@ -189,7 +189,17 @@ int main(int arg,char *args[]) {
 		
       //  printf("\n******ARCHIVO FILTRADO*******\n");
 
-		send(cliente, salida, sizeof(salida), 0);
+
+	  int number_to_send = strlen(salida);
+	   // Put your value
+	   char salida_[number_to_send];
+		int converted_number = htonl(number_to_send);
+		strcpy(salida_,salida);
+
+// Write the number to the opened socket
+		write(cliente, &converted_number, sizeof(converted_number));
+
+		send(cliente, salida_, sizeof(salida_), 0);
 	}
 
 	free(buffer);
