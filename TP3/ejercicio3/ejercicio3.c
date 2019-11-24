@@ -13,67 +13,73 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <sys/stat.h>
-#include<string.h>
+#include <string.h>
 
-
-int validarPathFifo(char *path) {
+int validarPathFifo(char *path)
+{
     char finalPath[strlen(path)];
     char *barra = strrchr(path, '/');
 
-    if (barra != NULL) {
+    if (barra != NULL)
+    {
         int cantidad = (strlen(path) - strlen(barra));
         strncpy(finalPath, path, cantidad);
         finalPath[cantidad] = '\0';
-    } else {
+    }
+    else
+    {
         strcpy(finalPath, path);
-
     }
 
     struct stat myFile;
-    if (stat(finalPath, &myFile) < 0) {
+    if (stat(finalPath, &myFile) < 0)
+    {
         printf("\nel directorio %s no existe\n ", finalPath);
         return 1;
-    } else {
+    }
+    else
+    {
 
         return 0;
     }
-
 }
 
-int validarParametros(int arg, char *args[]) {
-//args[0] nombre de script
-//args[1] archivo
-//args[2] fifo consulta
-//args[3] fifo resultado
-    if (arg != 4) {
+int validarParametros(int arg, char *args[])
+{
+    //args[0] nombre de script
+    //args[1] archivo
+    //args[2] fifo consulta
+    //args[3] fifo resultado
+    if (arg != 4)
+    {
         printf("\nCANTIDAD DE PARAMETROS INCORRECTOS,VERIFIQUE LA AYUDA\n");
         return 1;
     }
 
     struct stat myFile;
-    if (stat(args[1], &myFile) < 0) {
+    if (stat(args[1], &myFile) < 0)
+    {
         printf("\nno se encontro el archivo %s\n", args[1]);
         return 1;
     }
-
 
     if (validarPathFifo(args[2]) == 1)
         return 1;
     if (validarPathFifo(args[3]) == 1)
         return 1;
 
-
     return 0;
-
 }
 
-void mostrarAyuda() {
+void mostrarAyuda()
+{
     printf("\n Ejemplo de ejecucion:\n");
     printf("\t ./ej3  ./articulos.txt ./fifoConsulta ./fifoResultado \n");
     return;
 }
 
-void agregarSalida(char out[], char id[], char articulo[], char producto[], char marca[]) {
+void agregarSalida(char out[], char id[], char articulo[], char producto[], char marca[])
+{
     strcat(out, id);
     strcat(out, ";");
     strcat(out, articulo);
@@ -85,38 +91,39 @@ void agregarSalida(char out[], char id[], char articulo[], char producto[], char
     return;
 }
 
-int obtenerCantidadDeRegistros(char *path[]) {
+int obtenerCantidadDeRegistros(char *path[])
+{
     FILE *pf;
     int cantfilas = 0;
     pf = fopen(*path, "r");
-    if (!pf) {
+    if (!pf)
+    {
         printf("no se encuentra el archivo");
         exit(0);
     }
     char fila[100];
-    while (!feof(pf)) {
+    while (!feof(pf))
+    {
         fscanf(pf, " %[^\n]", fila);
         cantfilas++;
     }
     fclose(pf);
     return cantfilas;
-
 }
 
-void filtrarArchivo(char *path[], char *filtro, int registros, char *salida) {
-
+void filtrarArchivo(char *path[], char *filtro, int registros,char *salida)
+{
+     
     FILE *pf;
     int esId = strncmp("ID", filtro, 2);
     int esProducto = strncmp("PRODUCTO", filtro, 8);
     int esMarca = strncmp("MARCA", filtro, 5);
-    // printf("esMarca: %d",esMarca);
-    int j = 0;
-    printf("valor j=%d\n", j);
-    char id[100];
-    char articulo[100];
+    printf(" \narchivo: %s \n filtro:%s\n registros: %d \n",*path,filtro,registros);
+    char id[60];
+    char articulo[60];
 
-    char producto[100];
-    char marca[100];
+    char producto[60];
+    char marca[60];
     char *igual = strchr(filtro, '=');
     char *buscado = igual;
 
@@ -126,7 +133,8 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida) {
 
     printf("\nFILTRO: %s\n", filtro);
     pf = fopen(*path, "r");
-    if (!pf) {
+    if (!pf)
+    {
 
         printf("\nno se  encontro el archivo %s\n", *path);
         exit(0);
@@ -136,9 +144,10 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida) {
     strcpy(producto, " ");
     strcpy(marca, " ");
 
-    while (!feof(pf)) {
+    while (!feof(pf))
+    {
 
-        j++;
+        
         fflush(stdin);
         fscanf(pf, " %[^;]", id);
 
@@ -154,19 +163,23 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida) {
 
         fflush(stdin);
         fscanf(pf, " ;%[^\r|\n]", marca);
-        printf("id: %s articulo: %s producto:%s marca: %s\n", id, articulo, producto, marca);
+       // printf("id: %s articulo: %s producto:%s marca: %s\n", id, articulo, producto, marca);
 
         // printf(" registro:%d marca leida: %s",j,marca);
 
         // printf("marcaLeida:%s marcaBuscada:%s resultadoComparacion:%d\n",marca,buscado,valorComparacion);
-        if (esId == 0 && strcmp(id, buscado) == 0) {
+        if (esId == 0 && strcmp(id, buscado) == 0)
+        {
 
             agregarSalida(salida, id, articulo, producto, marca);
-
-        } else if (esMarca == 0 && strcmp(marca, buscado) == 0) {
+        }
+        else if (esMarca == 0 && strcmp(marca, buscado) == 0)
+        {
 
             agregarSalida(salida, id, articulo, producto, marca);
-        } else if (esProducto == 0 && strcmp(producto, buscado) == 0) {
+        }
+        else if (esProducto == 0 && strcmp(producto, buscado) == 0)
+        {
 
             agregarSalida(salida, id, articulo, producto, marca);
         }
@@ -175,14 +188,37 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida) {
         strcpy(articulo, " ");
         strcpy(producto, " ");
         strcpy(marca, " ");
-
     }
     fclose(pf);
+    printf("\nSALIDA: \n %s\n",salida);
 
-    return;
+}
+void crearFifos(char *fifoConsulta, char *fifoResultado)
+{
+
+    mkfifo(fifoConsulta, 0666);  //fifo consulta
+    mkfifo(fifoResultado, 0666); //fifo resultado
+}
+void recibirConsulta(int *fd,char*filtro,int tam)
+{    
+    
+    printf("antes de leer la consulta");
+    read(*fd, filtro, tam); // leer fifo
+    printf("\n consulta recibida: %s \n",filtro);
+}
+void enviarArchivoFiltrado(int *fds, char *salida,int tam)
+{
+    printf("\n%s\n",salida);
+    write(*fds, salida, tam);
+}
+void abrirFifos(int *fd,char *fifoConsulta,int *fds,char * fifoResultado){
+     *fd=open(fifoConsulta, O_RDONLY);//fd
+        *fds=open(fifoResultado, O_WRONLY);//fds
+
 }
 
-int main(int arg, char *args[]) {
+int main(int arg, char *args[])
+{
     int x;
     int num = arg;
 
@@ -190,19 +226,21 @@ int main(int arg, char *args[]) {
     // args[2] fifoConsulta
     //args[3] fifoResultado
 
-    if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0)) {
+    if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0))
+    {
 
         mostrarAyuda();
 
         return 0;
     }
     int res = validarParametros(arg, args);
-    if (res == 1) {
+    if (res == 1)
+    {
         return 0;
     }
-    
+
     // creo un proceso hijo
-    x = fork();
+     x = fork();
     //si es el padre termino, asi el hijo queda como demonio
 
    
@@ -211,53 +249,46 @@ int main(int arg, char *args[]) {
         return 0;
     }
 
-
-// crear fifos
-    mkfifo(args[2], 0666); //fifo consulta
-    mkfifo(args[3], 0666); //fifo resultado
+    crearFifos(args[2], args[3]);
+    // crear fifos
 
     //si es el hijo se queda ejecutando
-    while (1) {
+    while (1)
+    {
 
-        // abrir fifos 
-        int fd = open(args[2], O_RDONLY);
-
-
-        int fds = open(args[3], O_WRONLY);
-
-
-        char filtro[100];
-        int bytes = -1;
+        // abrir fifos
+        int fd;
+        int fds;
+        abrirFifos(&fd,args[2],&fds,args[3]);           
+        
         printf("\n*******************ESPERANDO CONSULTA*******************\n");
-        bytes = read(fd, filtro, sizeof(filtro)); // leer fifo
+        char filtro[100];
+        char *aMayuscula = filtro;
+         
+      
+         recibirConsulta(&fd,filtro,100);
         printf("\n ****** LLEGO LA CONSULTA********\n");
 
         int cantCaracteres = strlen(filtro);
-        char *aMayuscula = filtro;
-
 
         // pongo en mayuscula el filtro
-        for (int i = 0; i < cantCaracteres; i++) {
+        for (int i = 0; i < cantCaracteres; i++)
+        {
             *aMayuscula = toupper(*aMayuscula);
             aMayuscula++;
         }
-
-
         int registros = obtenerCantidadDeRegistros(&args[1]);
-
-        char salida[registros * 40];
-        printf("sizeofSalida: %ld", sizeof(salida));
-
-        filtrarArchivo(&args[1], filtro, registros, salida);
+       char salida[registros*40];
+       char *pS=salida;
+        
+        filtrarArchivo(&args[1], filtro, registros,salida);
         printf("\n******ARCHIVO FILTRADO*******\n");
-
-
-        write(fds, salida, sizeof(salida) + 1);
+    
+        enviarArchivoFiltrado(&fds,salida,registros*40+1);
 
         close(fds);
         close(fd);
     }
-
 
     return (0);
 }
