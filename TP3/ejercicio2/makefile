@@ -1,5 +1,5 @@
 all:  funciones
-funciones:  funciones.c
-	gcc -c funciones.c 
+funciones:
+	gcc -o ejercicio2 ejercicio2.c -pthread
 clean:
 	rm *.o
