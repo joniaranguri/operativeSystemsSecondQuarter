@@ -45,9 +45,9 @@ int sumarVectores(int cantHilos, double *vec1, double *vec2, double *vecRes, int
 
 int main(int params, char *args[]) {
     int exito = 0;
-    int cantHilos = atoi(args[1]);
-    char *nombre = args[2];
-    if (validarParametros(cantHilos, nombre)) {
+    if (params == 3 && validarParametros(atoi(args[1]), args[2])) {
+        int cantHilos = atoi(args[1]);
+        char *nombre = args[2];
         int cantPos = obtenerTamanoVectoresDeArchivo(nombre);
         if (cantPos > 0) {
             double vec1[cantPos], vec2[cantPos], vecRes[cantPos];
@@ -149,7 +149,7 @@ void *sumarVec(void *data) {
     struct info *dato = data;
     int desde = dato->desde;
     int hasta = dato->hasta;
-    for (;desde < hasta; desde++) {
+    for (; desde < hasta; desde++) {
         dato->vecRes[desde] = dato->vec1[desde] + dato->vec2[desde];
     }
     return 0;
@@ -193,7 +193,7 @@ int sumarVectores(int cantHilos, double *vec1, double *vec2, double *vecRes, int
         data[nroHilo].vec2 = vec2;
         data[nroHilo].vecRes = vecRes;
         pthread_create(&hilos[nroHilo], NULL, *sumarVec, &data[nroHilo]);
-        
+
         desde = hasta;
     }
 
@@ -201,7 +201,7 @@ int sumarVectores(int cantHilos, double *vec1, double *vec2, double *vecRes, int
         pthread_join(hilos[nroHilo], NULL);
     }
 
-        return 1;
+    return 1;
 }
 
 void mostrarVector(double vec[], int c) {
