@@ -5,7 +5,7 @@
          Diaz Adrian Maximiliano     38.167.742
          Rodriguez Gonzalo Martin    39.461.284
 */
-    
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -14,12 +14,12 @@
 #include <ctype.h>
 #include <string.h>
 #include <unistd.h>
- #include <sys/stat.h>
+#include <sys/stat.h>
 
-void mostrarAyuda()
-{
+void mostrarAyuda() {
     printf("\n Ejemplo de ejecucion: \n ./ej5 ./archivoProductos ./archivoConf ");
 }
+
 void agregarSalida(char out[], char id[], char articulo[], char producto[], char marca[]) {
     strcat(out, id);
     strcat(out, ";");
@@ -31,12 +31,13 @@ void agregarSalida(char out[], char id[], char articulo[], char producto[], char
     strcat(out, "\n");
     return;
 }
+
 int validarParametros(int arg, char *args[]) {
 //args[0] nombre de script
 //args[1] archivo de productos
 //args[2] archivo de configuracion
 
-    if (arg < 2 || arg >3) {
+    if (arg < 2 || arg > 3) {
         printf("\nCANTIDAD DE PARAMETROS INCORRECTOS,VERIFIQUE LA AYUDA\n");
         return 1;
     }
@@ -47,16 +48,17 @@ int validarParametros(int arg, char *args[]) {
         return 1;
     }
 
-if(arg == 3){
-	if (stat(args[2], &myFile) < 0) {
-        printf("\nno se encontro el archivo %s\n", args[2]);
-        return 1;
+    if (arg == 3) {
+        if (stat(args[2], &myFile) < 0) {
+            printf("\nno se encontro el archivo %s\n", args[2]);
+            return 1;
+        }
     }
-}
 
     return 0;
 
 }
+
 int obtenerCantidadDeRegistros(char *path[]) {
     FILE *pf;
     int cantfilas = 0;
@@ -83,7 +85,6 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida) {
     int esMarca = strncmp("MARCA", filtro, 5);
     // printf("esMarca: %d",esMarca);
     int j = 0;
-    printf("valor j=%d\n", j);
     char id[100];
     char articulo[100];
 
@@ -94,7 +95,6 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida) {
 
     strcpy(salida, " ");
     buscado++;
-    printf("buscado: %s\n", buscado);
 
     printf("\nFILTRO: %s\n", filtro);
     pf = fopen(*path, "r");
@@ -126,7 +126,7 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida) {
 
         fflush(stdin);
         fscanf(pf, " ;%[^\r|\n]", marca);
-       // printf("id: %s articulo: %s producto:%s marca: %s\n", id, articulo, producto, marca);
+        // printf("id: %s articulo: %s producto:%s marca: %s\n", id, articulo, producto, marca);
 
         // printf(" registro:%d marca leida: %s",j,marca);
 
@@ -154,95 +154,97 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida) {
 
     return;
 }
-int obtenerPuerto(){
-    int puerto=0;
-     FILE*  fp = fopen("CONFIGURATION.conf", "r");
+
+int obtenerPuerto(char *archivo) {
+    int puerto = 0;
+    FILE *fp = fopen(archivo, "r");
     fscanf(fp, "%d", &puerto);
 
-     return puerto;
+    return puerto;
 
 }
 
-int main(int arg,char *args[]) {
-	    if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0)) {
-
+int main(int arg, char *args[]) {
+    if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0)) {
         mostrarAyuda();
-
         return 0;
     }
 
-	struct sockaddr_in direccionServidor;
-	direccionServidor.sin_family = AF_INET;
-	direccionServidor.sin_addr.s_addr = INADDR_ANY;
-	direccionServidor.sin_port = htons(obtenerPuerto());
+    struct sockaddr_in direccionServidor;
+    direccionServidor.sin_family = AF_INET;
+    direccionServidor.sin_addr.s_addr = INADDR_ANY;
+    direccionServidor.sin_port = htons(obtenerPuerto(args[2]));
 
-	int servidor = socket(AF_INET, SOCK_STREAM, 0);
+    int servidor = socket(AF_INET, SOCK_STREAM, 0);
 
-	int activado = 1;
-	setsockopt(servidor, SOL_SOCKET, SO_REUSEADDR, &activado, sizeof(activado));
+    int activado = 1;
+    setsockopt(servidor, SOL_SOCKET, SO_REUSEADDR, &activado, sizeof(activado));
 
-	if (bind(servidor, (void*) &direccionServidor, sizeof(direccionServidor)) != 0) {
-		perror("Falló el bind");
-		return 1;
-	}
+    if (bind(servidor, (void *) &direccionServidor, sizeof(direccionServidor)) != 0) {
+        perror("Falló el bind");
+        return 1;
+    }
 
 //	printf("Estoy escuchando\n");
-	listen(servidor, SOMAXCONN);
+    listen(servidor, SOMAXCONN);
 
-	//------------------------------
+    //------------------------------
 
-	struct sockaddr_in direcciónCliente;
-	unsigned int tamañoDirección;
-	int cliente = accept(servidor, (void*) &direcciónCliente, &tamañoDirección);
+    struct sockaddr_in direcciónCliente;
+    unsigned int tamanioDireccion;
 
-//	printf("Recibí una conexión en %d!!\n", cliente);
+    while (1) {
+        int cliente = accept(servidor, (void *) &direcciónCliente, &tamanioDireccion);
 
-	char* buffer = malloc(1000);
+        printf("Recibí una conexión en %d!!\n", cliente);
 
-	while (1) {
-		
-		int bytesRecibidos = recv(cliente, buffer, 1000, 0);
-		if (bytesRecibidos <= 0) {
-			continue;
-		}
+        if (fork()) {
+            char *buffer = malloc(1000);
 
-		buffer[bytesRecibidos] = '\0';
-	//	printf("Me llegaron %d bytes con %s\n", bytesRecibidos, buffer);
+            while (1) {
 
+                int bytesRecibidos = recv(cliente, buffer, 1000, 0);
+                if (bytesRecibidos <= 0) {
+                    continue;
+                }
 
-        int cantCaracteres = strlen(buffer);
-        char *aMayuscula = buffer;
+                buffer[bytesRecibidos] = '\0';
 
-
-        // pongo en mayuscula el filtro
-        for (int i = 0; i < cantCaracteres; i++) {
-            *aMayuscula = toupper(*aMayuscula);
-            aMayuscula++;
-        }
+                int cantCaracteres = strlen(buffer);
+                char *aMayuscula = buffer;
 
 
-        int registros = obtenerCantidadDeRegistros(&args[1]);
-
-        char salida[registros * 40];
-
-        filtrarArchivo(&args[1], buffer, registros, salida);
-		
-      //  printf("\n******ARCHIVO FILTRADO*******\n");
+                // pongo en mayuscula el filtro
+                for (int i = 0; i < cantCaracteres; i++) {
+                    *aMayuscula = toupper(*aMayuscula);
+                    aMayuscula++;
+                }
 
 
-	  int number_to_send = strlen(salida);
-	   // Put your value
-	   char salida_[number_to_send];
-		int converted_number = htonl(number_to_send);
-		strcpy(salida_,salida);
+                int registros = obtenerCantidadDeRegistros(&args[1]);
+
+                char salida[registros * 40];
+
+                filtrarArchivo(&args[1], buffer, registros, salida);
+
+                //  printf("\n******ARCHIVO FILTRADO*******\n");
+
+
+                int number_to_send = strlen(salida);
+                // Put your value
+                char salida_[number_to_send];
+                int converted_number = htonl(number_to_send);
+                strcpy(salida_, salida);
 
 // Write the number to the opened socket
-		write(cliente, &converted_number, sizeof(converted_number));
+                write(cliente, &converted_number, sizeof(converted_number));
 
-		send(cliente, salida_, sizeof(salida_), 0);
-	}
+                send(cliente, salida_, sizeof(salida_), 0);
+            }
 
-	free(buffer);
+            free(buffer);
+        }
+    }
 
-	return 0;
+    return 0;
 }
