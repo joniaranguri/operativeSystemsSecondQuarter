@@ -196,27 +196,25 @@ int main(int arg, char *args[]) {
     if (res == 1) {
         return 0;
     }
-    // creo un proceso hijo
-//     x = fork();
-//    //si es el padre termino, asi el hijo queda como demonio
-//
-//
-//    if (x > 0)
-//    {
-//        return 0;
-//    }
+    //creo un proceso hijo
+     x = fork();
+    //si es el padre termino, asi el hijo queda como demonio
+
+
+    if (x > 0)
+    {
+        return 0;
+    }
 
     //si es el hijo se queda ejecutando
     while (1) {
         int fd;
         int fds;
 
-        printf("\n*******************ESPERANDO CONSULTA*******************\n");
         char filtro[100] = "";
         char *aMayuscula = filtro;
 
         recibirConsulta(filtro);
-        printf("\n ****** LLEGO LA CONSULTA********\n");
 
         int cantCaracteres = strlen(filtro);
 
@@ -227,10 +225,6 @@ int main(int arg, char *args[]) {
         }
         char salida[100];
         filtrarArchivo(&args[1], filtro, salida);
-        printf("\n******ARCHIVO FILTRADO*******\n");
-
-
-        printf("\nse mando el resultado\n");
 
         close(fds);
         close(fd);
