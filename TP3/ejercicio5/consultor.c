@@ -24,7 +24,7 @@ int validarParametros(int arg, char *args[]) {
 }
 
 void mostrarAyuda() {
-    printf("\n Ejemplo de ejecucion: \n ./consultar archivoDeConfig \n Luego escribir las consultas con el siguiente formato:\n producto=P.DULCE");
+    printf("\n Ejemplo de ejecucion: \n ./consultar archivoDeConfig");
 }
 
 int obtenerPuerto(char *archivo) {
