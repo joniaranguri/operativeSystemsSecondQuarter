@@ -97,12 +97,16 @@ int main(int arg, char *args[]) {
         return 1;
     }
 
+    int elemento = 1;
     enviarConsulta(args[1], cantCaracteres + 1);
     mensaje men;
     men.siguiente = 1;
     while (men.siguiente) {
         recibirResultado(&men);
-        printf("\n%s\n", men.valor);
+        if (strlen(men.valor) != 0) {
+            printf("%d) %s", elemento, men.valor);
+            elemento++;
+        }
     }
 
     return 0;
