@@ -70,8 +70,8 @@ int validarParametros(int cantHilos, char *nombre) {
     //args[1] cantidad de hilos
     //args[2] archivo
 
-    if (cantHilos < 0) {
-        printf("\nNo se pueden crear threads negativos");
+    if (cantHilos < 1) {
+        printf("\nEl numero de threads debe ser mayor a cero");
         return 0;
     }
 

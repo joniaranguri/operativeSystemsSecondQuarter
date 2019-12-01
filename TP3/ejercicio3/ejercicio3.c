@@ -324,15 +324,19 @@ int main(int arg,char *args[])
 
     //si es el hijo se queda ejecutando   
 
-    while (1)
-    {
+        char filtro[100]="";
+        char *aMayuscula = filtro;
+        char salida[100];
         int fd;
         int fds;
+        int registros = obtenerCantidadDeRegistros(&args[1]);
+        char *pS = salida;
+    while (1)
+    {
         abrirFifos(&fd, args[2], &fds, args[3]);
 
         printf("\n*******************ESPERANDO CONSULTA*******************\n");
-        char filtro[100]="";
-        char *aMayuscula = filtro;
+        strcpy(filtro," ");
 
         recibirConsulta(&fd, filtro,100);
         printf("\n ****** LLEGO LA CONSULTA********\n");
@@ -345,10 +349,9 @@ int main(int arg,char *args[])
             *aMayuscula = toupper(*aMayuscula);
             aMayuscula++;
         }
-        int registros = obtenerCantidadDeRegistros(&args[1]);
-        char salida[100];
-        char *pS = salida;
+        strcpy(salida," ");
         informarCantidadRegistrosFiltrado(&args[1],filtro,registros,&fds);
+    
         filtrarArchivo(&args[1], filtro, registros, salida,&fds);
         printf("\n******ARCHIVO FILTRADO*******\n");
 

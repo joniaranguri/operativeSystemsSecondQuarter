@@ -43,7 +43,11 @@ int validarParametros(int arg, char *args[])
 
 void mostrarAyuda()
 {
-    printf("\n Ejemplo de ejecucion: \n ./consultar producto=P.DULCE ./fifoConsulta ./fifoResultado \n");
+    printf("\n Ejemplo de ejecucion: \n");
+    printf(" \t ./consultar producto=P.DULCE ./fifoConsulta ./fifoResultado \n");
+    printf("\t ./consultar marca=MAROLIO ./fifoConsulta ./fifoResultado \n");
+    printf("\t ./consultar id=16008 ./fifoConsulta ./fifoResultado \n");
+    
     //args[1] consulta
     //args[2] fifoConsulta
     //args[3] fifoResultado
@@ -73,8 +77,6 @@ int main(int arg, char *args[])
     //args[3] fifoResultado
 
  
-    char *entrada = args[1];
-    int cantCaracteres = strlen(entrada);
     if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-help") == 0 || strcmp(args[1], "-?") == 0))
     {
         mostrarAyuda();
@@ -82,6 +84,8 @@ int main(int arg, char *args[])
     }
     if (validarParametros(arg, args) == 1)
         return 1;
+    char *entrada = args[1];
+    int cantCaracteres = strlen(entrada);
     int fd;
     int fds;
    
