@@ -17,6 +17,13 @@
 #include <semaphore.h>
 #include <sys/mman.h>
 #include "constantes.h"
+int validarConsulta(char *consulta)
+{
+    char *igual = strchr(consulta, '=');
+    if (!igual)
+        return 1;
+    return 0;
+}
 
 int validarParametros(int arg)
 {
@@ -99,6 +106,11 @@ int main(int arg, char *args[])
     }
     char *entrada = args[1];
     int cantCaracteres = strlen(entrada);
+    if (validarConsulta(entrada))
+    {
+        printf("\n Consulta invalida, no se encontro el = \n");
+        return 1;
+    }
 
     int elemento = 1;
     enviarConsulta(args[1], cantCaracteres + 1);

@@ -1,5 +1,5 @@
 
-/* Trabajo práctico N3 Ejercicio 5 (Primera entrega)
+/* Trabajo práctico N3 Ejercicio 5 (Segunda entrega)
     Script: consultor.c
     Integrantes:
          Diaz Adrian Maximiliano     38.167.742
@@ -13,6 +13,13 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <sys/stat.h>
+int validarConsulta(char *consulta)
+{
+    char *igual = strchr(consulta, '=');
+    if (!igual)
+        return 1;
+    return 0;
+}
 
 int validarParametros(int arg, char *args[])
 {
@@ -71,10 +78,17 @@ int main(int arg, char *args[])
     char mensaje[1000];
     printf("\nEscriba su consulta: ");
     scanf("%s", mensaje);
+    while (validarConsulta(mensaje) == 1)
+    {
+        printf("\nConsulta invalida no se encuenta el = \nEscriba su consulta: ");
+        scanf("%s", mensaje);
+    }
+
     while (strcmp(mensaje, END_REQUEST) != 0)
     {
 
         send(cliente, mensaje, strlen(mensaje), 0);
+
         printf("\nSE ENVIO LA CONSULTA\n");
 
         int received_int = 0;
@@ -90,6 +104,11 @@ int main(int arg, char *args[])
         printf("\nEscriba su consulta: ");
 
         scanf("%s", mensaje);
+        while (validarConsulta(mensaje) == 1)
+        {
+            printf("\nConsulta invalida no se encuenta el = \nEscriba su consulta: ");
+            scanf("%s", mensaje);
+        }
     }
 
     return 0;
