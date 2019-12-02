@@ -12,9 +12,10 @@
 #include <ctype.h>
 #include <sys/stat.h>
 #include <string.h>
-int validarConsulta(char *consulta){
-    char *igual=strchr(consulta,'=');
-    if(!igual)
+int validarConsulta(char *consulta)
+{
+    char *igual = strchr(consulta, '=');
+    if (!igual)
         return 1;
     return 0;
 }
@@ -182,8 +183,8 @@ void informarCantidadRegistrosFiltrado(char *path[], char *filtro, int registros
         strcpy(marca, " ");
     }
     fclose(pf);
-    if(cantidad==0)
-     cantidad++;
+    if (cantidad == 0)
+        cantidad++;
 
     write(*fds, &cantidad, sizeof(int));
 }
@@ -256,8 +257,8 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida, int
         strcpy(marca, "");
     }
     fclose(pf);
-    if(strlen(salida)==0)
-        strcpy(salida,"no hay coincidencias");
+    if (strlen(salida) == 0)
+        strcpy(salida, "no hay coincidencias");
     enviarArchivoFiltrado(fds, salida, strlen(salida));
 }
 void crearFifos(char *fifoConsulta, char *fifoResultado)
@@ -321,19 +322,19 @@ int main(int arg, char *args[])
         int fds;
         abrirFifos(&fd, args[2], &fds, args[3]);
 
-       // printf("\n*******************ESPERANDO CONSULTA*******************\n");
+        // printf("\n*******************ESPERANDO CONSULTA*******************\n");
         char filtro[100] = "";
         char *aMayuscula = filtro;
 
         recibirConsulta(&fd, filtro, 100);
 
         int cantCaracteres = strlen(filtro);
-        
-        if (cantCaracteres != 0  ) 
+
+        if (cantCaracteres != 0)
         {
-      
+
             // pongo en mayuscula el filtro
-           
+
             for (int i = 0; i < cantCaracteres; i++)
             {
                 *aMayuscula = toupper(*aMayuscula);
@@ -342,18 +343,19 @@ int main(int arg, char *args[])
             int registros = obtenerCantidadDeRegistros(&args[1]);
             char salida[registros * 100];
             char *pS = salida;
-            if(validarConsulta(filtro)==1){
-                int cantidad=1;
-               write(fds, &cantidad, sizeof(int));
-               strcpy(salida,"no se encontro el = en la consulta");
-              enviarArchivoFiltrado(&fds,salida,strlen(salida));
-                }
-            else{
-
-            informarCantidadRegistrosFiltrado(&args[1], filtro, registros, &fds);
-            filtrarArchivo(&args[1], filtro, registros, salida, &fds);
+            if (validarConsulta(filtro) == 1)
+            {
+                int cantidad = 1;
+                write(fds, &cantidad, sizeof(int));
+                strcpy(salida, "no se encontro el = en la consulta");
+                enviarArchivoFiltrado(&fds, salida, strlen(salida));
             }
-         
+            else
+            {
+
+                informarCantidadRegistrosFiltrado(&args[1], filtro, registros, &fds);
+                filtrarArchivo(&args[1], filtro, registros, salida, &fds);
+            }
         }
         close(fds);
         close(fd);

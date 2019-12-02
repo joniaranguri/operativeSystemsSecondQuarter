@@ -1,4 +1,4 @@
-/* Trabajo práctico N3 Ejercicio 3 (Primera entrega)
+/* Trabajo práctico N3 Ejercicio 5 (Segunda entrega)
     Script: ejercicio5.c
     Integrantes:
          Diaz Adrian Maximiliano     38.167.742
@@ -186,7 +186,7 @@ int main(int arg, char *args[])
     }
     if (validarParametros(arg, args) == 1)
         return 1;
-  int x;
+    int x;
     x = fork();
     if (x > 0)
         return 1;
@@ -213,7 +213,7 @@ int main(int arg, char *args[])
 
     struct sockaddr_in direccionCliente;
     unsigned int tamanioDireccion;
-  
+
     while (1)
     {
         int cliente = accept(servidor, (void *)&direccionCliente, &tamanioDireccion);

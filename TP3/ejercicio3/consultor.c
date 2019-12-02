@@ -13,15 +13,14 @@
 #include <sys/stat.h>
 #include <string.h>
 
-
 int validarParametros(int arg, char *args[])
 {
-       //args[1] consulta
+    //args[1] consulta
     //args[2] fifoConsulta
     //args[3] fifoResultado
     if (arg != 4)
     {
-        printf("\n cantidad de parametros incorrecta, verifique la ayuda");
+        printf("\n cantidad de parametros incorrecta, verifique la ayuda\n");
         return 1;
     }
     struct stat myFile;
@@ -47,13 +46,13 @@ void mostrarAyuda()
     printf(" \t ./consultar producto=P.DULCE ./fifoConsulta ./fifoResultado \n");
     printf("\t ./consultar marca=MAROLIO ./fifoConsulta ./fifoResultado \n");
     printf("\t ./consultar id=16008 ./fifoConsulta ./fifoResultado \n");
-    
+
     //args[1] consulta
     //args[2] fifoConsulta
     //args[3] fifoResultado
-  
 }
-void recibirResultado(int *fds, char *resultado, int tam){
+void recibirResultado(int *fds, char *resultado, int tam)
+{
     read(*fds, resultado, tam); // leer fifo
 }
 void enviarConsulta(int *fd, char *salida, int tam)
@@ -65,9 +64,9 @@ void abrirFifos(int *fd, char *fifoConsulta, int *fds, char *fifoResultado)
     *fd = open(fifoConsulta, O_WRONLY);   //fd
     *fds = open(fifoResultado, O_RDONLY); //fds
 }
-void recibirCantidadFiltrados(int *fds,int *cantidad){
-    read(*fds,cantidad,sizeof(int));
-   
+void recibirCantidadFiltrados(int *fds, int *cantidad)
+{
+    read(*fds, cantidad, sizeof(int));
 }
 int main(int arg, char *args[])
 {
@@ -75,7 +74,6 @@ int main(int arg, char *args[])
     //args[2] fifoConsulta
     //args[3] fifoResultado
 
- 
     if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-help") == 0 || strcmp(args[1], "-?") == 0))
     {
         mostrarAyuda();
@@ -87,19 +85,18 @@ int main(int arg, char *args[])
     int cantCaracteres = strlen(entrada);
     int fd;
     int fds;
-   
+
     abrirFifos(&fd, args[2], &fds, args[3]);
 
-    enviarConsulta(&fd, args[1], cantCaracteres+1);
-    int i=0;
+    enviarConsulta(&fd, args[1], cantCaracteres + 1);
+    int i = 0;
     int cantidadFiltrados;
-  recibirCantidadFiltrados(&fds,&cantidadFiltrados);
-    char resultado[cantidadFiltrados*100];
-  printf("\n****************SALIDAAAAA*******************\n");
-  
-    recibirResultado(&fds, resultado, cantidadFiltrados*100);
-     printf("\n%s\n", resultado);
+    recibirCantidadFiltrados(&fds, &cantidadFiltrados);
+    char resultado[cantidadFiltrados * 100];
+    printf("\n****************SALIDAAAAA*******************\n");
 
-  
+    recibirResultado(&fds, resultado, cantidadFiltrados * 100);
+    printf("\n%s\n", resultado);
+
     return 0;
 }
