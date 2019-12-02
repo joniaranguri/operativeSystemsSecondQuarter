@@ -17,7 +17,7 @@
 #include <sys/stat.h>
 
 void mostrarAyuda() {
-    printf("\n Ejemplo de ejecucion: \n ./ej5 ./archivoProductos ./archivoConf ");
+    printf("\n Ejemplo de ejecucion: \n ./ej5 ./archivoProductos ./archivoConf \n");
 }
 
 void agregarSalida(char out[], char id[], char articulo[], char producto[], char marca[]) {
@@ -64,7 +64,7 @@ int obtenerCantidadDeRegistros(char *path[]) {
     int cantfilas = 0;
     pf = fopen(*path, "r");
     if (!pf) {
-        printf("no se encuentra el archivo");
+        printf("no se encuentra el archivo\n");
         exit(0);
     }
     char fila[100];
@@ -96,7 +96,7 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida) {
     strcpy(salida, " ");
     buscado++;
 
-    printf("\nFILTRO: %s\n", filtro);
+   // printf("\nFILTRO: %s\n", filtro);
     pf = fopen(*path, "r");
     if (!pf) {
 
@@ -169,6 +169,8 @@ int main(int arg, char *args[]) {
         mostrarAyuda();
         return 0;
     }
+    if(validarParametros(arg,args)==1)
+    return 1;
 
     struct sockaddr_in direccionServidor;
     direccionServidor.sin_family = AF_INET;
@@ -190,11 +192,14 @@ int main(int arg, char *args[]) {
 
     //------------------------------
 
-    struct sockaddr_in direcciónCliente;
+    struct sockaddr_in direccionCliente;
     unsigned int tamanioDireccion;
-
+int x;
+x=fork();
+if(x>0)
+    return 1;
     while (1) {
-        int cliente = accept(servidor, (void *) &direcciónCliente, &tamanioDireccion);
+        int cliente = accept(servidor, (void *) &direccionCliente, &tamanioDireccion);
 
         printf("Recibí una conexión en %d!!\n", cliente);
 
