@@ -89,19 +89,19 @@ int main(int arg, char *args[])
     int fd;
     int fds;
    
-    char resultado[100];
     abrirFifos(&fd, args[2], &fds, args[3]);
 
     enviarConsulta(&fd, args[1], cantCaracteres+1);
     int i=0;
     int cantidadFiltrados;
   recibirCantidadFiltrados(&fds,&cantidadFiltrados);
+    char resultado[cantidadFiltrados*100];
   printf("\n****************SALIDAAAAA*******************\n");
-    for(i=0;i<cantidadFiltrados;i++){
-    recibirResultado(&fds, resultado, 100);
-      printf("\n%s\n", resultado);
+    //for(i=0;i<cantidadFiltrados;i++){
+    recibirResultado(&fds, resultado, cantidadFiltrados*100);
+     printf("\n%s\n", resultado);
 
-    }
+    //}
   
     return 0;
 }
