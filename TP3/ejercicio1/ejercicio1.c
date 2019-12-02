@@ -46,15 +46,23 @@ int status;
 sem_t *sem;
 
 void mostrarAyuda(){
-    printf("\n Ejemplo de ejecucion: \n ./ejercicio1");
+    printf("\n Ejemplo de ejecucion: \n ./ejercicio1\n");
 }
 
 int main(int arg, char *args[]) {
+    
 
     if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-help") == 0 || strcmp(args[1], "-?") == 0)) {
         mostrarAyuda();
         return 0;
     }
+    if(arg!=1){
+        printf("\n Cantidad de parametros incorrecta, verifique la ayuda\n");
+        return 1;
+    }
+
+
+    
 
     sem_unlink(SEMAFORO);
     sem = sem_open(SEMAFORO, O_CREAT, 0600, 0);
