@@ -58,7 +58,6 @@ void recibirResultado(int *fds, char *resultado, int tam){
 }
 void enviarConsulta(int *fd, char *salida, int tam)
 {
-    printf("\nconsultaenviada:%s\n", salida);
     write(*fd, salida, tam);
 }
 void abrirFifos(int *fd, char *fifoConsulta, int *fds, char *fifoResultado)
@@ -68,7 +67,7 @@ void abrirFifos(int *fd, char *fifoConsulta, int *fds, char *fifoResultado)
 }
 void recibirCantidadFiltrados(int *fds,int *cantidad){
     read(*fds,cantidad,sizeof(int));
-    printf("\ncantidad filtrado: %d\n", *cantidad);
+   
 }
 int main(int arg, char *args[])
 {
@@ -97,11 +96,10 @@ int main(int arg, char *args[])
   recibirCantidadFiltrados(&fds,&cantidadFiltrados);
     char resultado[cantidadFiltrados*100];
   printf("\n****************SALIDAAAAA*******************\n");
-    //for(i=0;i<cantidadFiltrados;i++){
+  
     recibirResultado(&fds, resultado, cantidadFiltrados*100);
      printf("\n%s\n", resultado);
 
-    //}
   
     return 0;
 }
