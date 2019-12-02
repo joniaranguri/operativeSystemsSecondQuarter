@@ -16,7 +16,8 @@
 #include <unistd.h>
 #include <stdarg.h>
 #include <signal.h>
-#include <cstring>
+#include <string.h>
+#define SEMAFORO "semaforo"
 
 pid_t hijo1();
 
@@ -38,8 +39,7 @@ pid_t bisnieto4();
 
 pid_t bisnieto5();
 
-bool soyHijo(int);
-
+int soyHijo(int);
 void esperarYSalir(int count, ...);
 
 int status;
@@ -56,7 +56,8 @@ int main(int arg, char *args[]) {
         return 0;
     }
 
-    sem = sem_open("semaforo", O_TRUNC, 0600, 0);
+    sem_unlink(SEMAFORO);
+    sem = sem_open(SEMAFORO, O_CREAT, 0600, 0);
 
     pid_t pid1 = hijo1();
     pid_t pid2;
@@ -70,10 +71,7 @@ int main(int arg, char *args[]) {
 
     sem_post(sem);
     esperarYSalir(2, pid1, pid2);
-
     sem_close(sem);
-    sem_unlink("semaforo");
-
     return 0;
 }
 
@@ -200,7 +198,7 @@ pid_t bisnieto5() {
 }
 
 void esperarYSalir(int count, ...) {
-    sem = sem_open("semaforo", O_CREAT, 0600, 0);
+    sem = sem_open(SEMAFORO, O_CREAT, 0600, 0);
 
     sem_wait(sem);
 
@@ -216,6 +214,6 @@ void esperarYSalir(int count, ...) {
     exit(1);
 }
 
-bool soyHijo(int pid) {
+int soyHijo(int pid) {
     return pid == 0;
 }
