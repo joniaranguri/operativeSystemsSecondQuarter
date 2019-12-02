@@ -30,10 +30,9 @@ int validarParametros(int arg) {
 }
 
 void mostrarAyuda() {
-    printf("\n Ejemplo de ejecucion: \n ./consultar producto=P.DULCE ./fifoConsulta ./fifoResultado \n");
+    printf("\n Ejemplo de ejecucion: \n ./consultar producto=P.DULCE \n");
     //args[1] consulta
-    //args[2] fifoConsulta
-    //args[3] fifoResultado
+ 
 
 }
 
