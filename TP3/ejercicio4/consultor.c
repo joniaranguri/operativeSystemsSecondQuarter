@@ -22,7 +22,7 @@
 int validarParametros(int arg) {
     //args[1] consulta
     if (arg != 2) {
-        printf("\n cantidad de parametros incorrecta, verifique la ayuda");
+        printf("\n cantidad de parametros incorrecta, verifique la ayuda\n");
         return 1;
     }
 
@@ -87,8 +87,6 @@ void enviarConsulta(char *consulta, int tam) {
 int main(int arg, char *args[]) {
     //args[1] consulta
 
-    char *entrada = args[1];
-    int cantCaracteres = strlen(entrada);
     if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-help") == 0 || strcmp(args[1], "-?") == 0)) {
         mostrarAyuda();
         return 0;
@@ -96,6 +94,8 @@ int main(int arg, char *args[]) {
     if (validarParametros(arg) == 1) {
         return 1;
     }
+    char *entrada = args[1];
+    int cantCaracteres = strlen(entrada);
 
     int elemento = 1;
     enviarConsulta(args[1], cantCaracteres + 1);

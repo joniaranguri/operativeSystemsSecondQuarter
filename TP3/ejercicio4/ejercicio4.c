@@ -58,7 +58,7 @@ int validarParametros(int arg, char *args[]) {
 
 void mostrarAyuda() {
     printf("\n Ejemplo de ejecucion:\n");
-    printf("\t ./ej3  ./articulos.txt ./fifoConsulta ./fifoResultado \n");
+    printf("\t ./ej4  ./articulos.txt \n");
     return;
 }
 
