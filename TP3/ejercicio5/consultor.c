@@ -13,12 +13,21 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <sys/stat.h>
+
 
 
 int validarParametros(int arg, char *args[]) {
-    if (arg != 3) {
+    if (arg != 2) {
+        printf("\n cantidad de paramentros incorrecta , verifique la ayuda\n");
         return 1;
     }
+     struct stat myFile;
+    if (stat(args[1], &myFile) < 0) {
+        printf("\nno se encontro el archivo %s\n", args[1]);
+        return 1;
+    }
+
 
     return 0;
 }
@@ -43,6 +52,8 @@ int main(int arg, char *args[]) {
 
         return 0;
     }
+    if(validarParametros(arg,args)==1)
+    return 1;
     const char *END_REQUEST = "QUIT";
     struct sockaddr_in direccionServidor;
     direccionServidor.sin_family = AF_INET;
