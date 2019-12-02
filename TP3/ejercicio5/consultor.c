@@ -33,7 +33,7 @@ int validarParametros(int arg, char *args[]) {
 }
 
 void mostrarAyuda() {
-    printf("\n Ejemplo de ejecucion: \n ./consultar archivoDeConfig \n Se pediran las consultas interactivamente la terminal \n Para finaliza ingrese QUIT");
+    printf("\n Ejemplo de ejecucion: \n ./consultar archivoDeConfig \n Se pediran las consultas interactivamente la terminal \n Para finaliza ingrese QUIT\n");
 }
 
 int obtenerPuerto(char *archivo) {
@@ -63,11 +63,11 @@ int main(int arg, char *args[]) {
 
     int cliente = socket(AF_INET, SOCK_STREAM, 0);
     if (connect(cliente, (void *) &direccionServidor, sizeof(direccionServidor)) != 0) {
-        perror("No se pudo conectar");
+        perror("\nNo se pudo conectar\n");
         return 1;
     }
     char mensaje[1000];
-    printf("Escriba su consulta: ");
+    printf("\nEscriba su consulta: ");
     scanf("%s", mensaje);
     while (strcmp(mensaje, END_REQUEST) != 0) {
 
