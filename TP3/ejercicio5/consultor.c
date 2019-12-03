@@ -39,34 +39,6 @@ void mostrarAyuda() {
     printf("\n Ejemplo de ejecucion: \n ./consultar archivoDeConfig \n Se pediran las consultas interactivamente la terminal \n Para finaliza ingrese QUIT\n");
 }
 
-int obtenerPuerto(char *archivo) {
-    int puerto = 0;
-    FILE *fp = fopen(archivo, "r");
-    fflush(stdin);
-    fscanf(fp, "%d", &puerto);
-
-    fclose(fp);
-
-    return puerto;
-}
-
-char *obtenerIp(char *archivo) {
-    char ip[16];
-    int puerto = 0;
-    FILE *fp = fopen(archivo, "r");
-
-    strcpy(ip, "");
-
-    fflush(stdin);
-    fscanf(fp, "%d", &puerto);
-    fflush(stdin);
-    fscanf(fp, "%s", ip);
-
-    fclose(fp);
-
-    return ip;
-}
-
 int main(int arg, char *args[]) {
     if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0)) {
         mostrarAyuda();
@@ -77,8 +49,22 @@ int main(int arg, char *args[]) {
     const char *END_REQUEST = "QUIT";
     struct sockaddr_in direccionServidor;
     direccionServidor.sin_family = AF_INET;
-    direccionServidor.sin_addr.s_addr = inet_addr(obtenerIp(args[1]));
-    direccionServidor.sin_port = htons(obtenerPuerto(args[1]));
+
+    char ip[16];
+    int puerto = 0;
+    FILE *fp = fopen(args[1], "r");
+
+    strcpy(ip, "");
+
+    fflush(stdin);
+    fscanf(fp, "%d", &puerto);
+    fflush(stdin);
+    fscanf(fp, "%s", ip);
+
+    fclose(fp);
+
+    direccionServidor.sin_addr.s_addr = inet_addr(ip);
+    direccionServidor.sin_port = htons(puerto);
 
     int cliente = socket(AF_INET, SOCK_STREAM, 0);
     if (connect(cliente, (void *) &direccionServidor, sizeof(direccionServidor)) != 0) {
