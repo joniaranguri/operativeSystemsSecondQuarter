@@ -16,9 +16,17 @@
 #include <semaphore.h>
 #include <sys/mman.h>
 #include "constantes.h"
+#include<signal.h>
 
-void enviarArchivoFiltrado(char *salida, int siguiente)
-{
+void sig_handler(int signal) {
+    shm_unlink(MEMORIA_RESULTADOS);
+    sem_unlink(SEMAFORO_A);
+    sem_unlink(SEMAFORO_B);
+    sem_unlink(SEMAFORO_C);
+    sem_unlink(SEMAFORO_D);
+}
+
+void enviarArchivoFiltrado(char *salida, int siguiente) {
     int fds;
     mensaje *mem;
     sem_t *sem3 = sem_open(SEMAFORO_C, O_CREAT, 0600, 0); // crear semaforo
@@ -39,19 +47,16 @@ void enviarArchivoFiltrado(char *salida, int siguiente)
     sem_close(sem4);
 }
 
-int validarParametros(int arg, char *args[])
-{
+int validarParametros(int arg, char *args[]) {
     //args[0] nombre de script
     //args[1] archivo
-    if (arg != 2)
-    {
+    if (arg != 2) {
         printf("\nCANTIDAD DE PARAMETROS INCORRECTOS,VERIFIQUE LA AYUDA\n");
         return 1;
     }
 
     struct stat myFile;
-    if (stat(args[1], &myFile) < 0)
-    {
+    if (stat(args[1], &myFile) < 0) {
         printf("\nno se encontro el archivo %s\n", args[1]);
         return 1;
     }
@@ -59,15 +64,13 @@ int validarParametros(int arg, char *args[])
     return 0;
 }
 
-void mostrarAyuda()
-{
+void mostrarAyuda() {
     printf("\n Ejemplo de ejecucion:\n");
     printf("\t ./ej4  ./articulos.txt \n");
     return;
 }
 
-void agregarSalida(char out[], char id[], char articulo[], char producto[], char marca[])
-{
+void agregarSalida(char out[], char id[], char articulo[], char producto[], char marca[]) {
     strcat(out, id);
     strcat(out, ";");
     strcat(out, articulo);
@@ -79,19 +82,16 @@ void agregarSalida(char out[], char id[], char articulo[], char producto[], char
     return;
 }
 
-int obtenerCantidadDeRegistros(char *path[])
-{
+int obtenerCantidadDeRegistros(char *path[]) {
     FILE *pf;
     int cantfilas = 0;
     pf = fopen(*path, "r");
-    if (!pf)
-    {
+    if (!pf) {
         printf("no se encuentra el archivo");
         exit(0);
     }
     char fila[100];
-    while (!feof(pf))
-    {
+    while (!feof(pf)) {
         fscanf(pf, " %[^\n]", fila);
         cantfilas++;
     }
@@ -99,8 +99,7 @@ int obtenerCantidadDeRegistros(char *path[])
     return cantfilas;
 }
 
-void filtrarArchivo(char *path[], char *filtro, char *salida)
-{
+void filtrarArchivo(char *path[], char *filtro, char *salida) {
 
     FILE *pf;
     int esId = strncmp("ID", filtro, 2);
@@ -120,8 +119,7 @@ void filtrarArchivo(char *path[], char *filtro, char *salida)
 
     printf("\nFILTRO: %s\n", filtro);
     pf = fopen(*path, "r");
-    if (!pf)
-    {
+    if (!pf) {
         printf("\nno se  encontro el archivo %s\n", *path);
         exit(0);
     }
@@ -131,8 +129,7 @@ void filtrarArchivo(char *path[], char *filtro, char *salida)
     strcpy(producto, " ");
     strcpy(marca, " ");
 
-    while (!feof(pf))
-    {
+    while (!feof(pf)) {
 
         fflush(stdin);
         fscanf(pf, " %[^;]", id);
@@ -146,18 +143,13 @@ void filtrarArchivo(char *path[], char *filtro, char *salida)
         fflush(stdin);
         fscanf(pf, " ;%[^\r|\n]", marca);
 
-        if (esId == 0 && strcmp(id, buscado) == 0)
-        {
+        if (esId == 0 && strcmp(id, buscado) == 0) {
             agregarSalida(salida, id, articulo, producto, marca);
             enviarArchivoFiltrado(salida, 1);
-        }
-        else if (esMarca == 0 && strcmp(marca, buscado) == 0)
-        {
+        } else if (esMarca == 0 && strcmp(marca, buscado) == 0) {
             agregarSalida(salida, id, articulo, producto, marca);
             enviarArchivoFiltrado(salida, 1);
-        }
-        else if (esProducto == 0 && strcmp(producto, buscado) == 0)
-        {
+        } else if (esProducto == 0 && strcmp(producto, buscado) == 0) {
             agregarSalida(salida, id, articulo, producto, marca);
             enviarArchivoFiltrado(salida, 1);
         }
@@ -173,8 +165,7 @@ void filtrarArchivo(char *path[], char *filtro, char *salida)
     fclose(pf);
 }
 
-void recibirConsulta(char *filtro)
-{
+void recibirConsulta(char *filtro) {
     int fd;
     char *mem;
     sem_t *sem = sem_open(SEMAFORO_A, O_CREAT, 0600, 0); // crear semaforo
@@ -182,8 +173,9 @@ void recibirConsulta(char *filtro)
     size_t tam = sizeof(char) * 100;
     fd = shm_open(MEMORIA_CONSULTA, O_CREAT | O_RDWR, 0600); // crear memoria compartida
     ftruncate(fd, tam);
-    mem = (char *)mmap(NULL, tam, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0); // asociar espacio a variable
-    sem_wait(sem);                                                            // P() // me quedo bloquedo hasta poder leer de la memoria
+    mem = (char *) mmap(NULL, tam, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0); // asociar espacio a variable
+    sem_wait(
+            sem);                                                            // P() // me quedo bloquedo hasta poder leer de la memoria
     printf("%s\n", mem);
     strcpy(filtro, mem);
     sem_post(sem2); // V()
@@ -193,8 +185,8 @@ void recibirConsulta(char *filtro)
     sem_close(sem2);
 }
 
-int main(int arg, char *args[])
-{
+int main(int arg, char *args[]) {
+    signal(SIGINT, sig_handler);
     shm_unlink(MEMORIA_RESULTADOS);
     sem_unlink(SEMAFORO_A);
     sem_unlink(SEMAFORO_B);
@@ -203,29 +195,25 @@ int main(int arg, char *args[])
     int x;
     // args[1] archivo
 
-    if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0))
-    {
+    if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0)) {
         mostrarAyuda();
         return 0;
     }
 
     int res = validarParametros(arg, args);
-    if (res == 1)
-    {
+    if (res == 1) {
         return 0;
     }
     //creo un proceso hijo
     x = fork();
     //si es el padre termino, asi el hijo queda como demonio
 
-    if (x > 0)
-    {
+    if (x > 0) {
         return 0;
     }
 
     //si es el hijo se queda ejecutando
-    while (1)
-    {
+    while (1) {
         int fd;
         int fds;
 
@@ -237,8 +225,7 @@ int main(int arg, char *args[])
         int cantCaracteres = strlen(filtro);
 
         // pongo en mayuscula el filtro
-        for (int i = 0; i < cantCaracteres; i++)
-        {
+        for (int i = 0; i < cantCaracteres; i++) {
             *aMayuscula = toupper(*aMayuscula);
             aMayuscula++;
         }
