@@ -249,5 +249,10 @@ int main(int arg, char *args[])
         close(fd);
     }
 
+    shm_unlink(MEMORIA_RESULTADOS);
+    sem_unlink(SEMAFORO_A);
+    sem_unlink(SEMAFORO_B);
+    sem_unlink(SEMAFORO_C);
+    sem_unlink(SEMAFORO_D);
     return (0);
 }

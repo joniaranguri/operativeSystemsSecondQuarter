@@ -21,16 +21,26 @@ int validarConsulta(char *consulta)
     return 0;
 }
 
+<<<<<<< Updated upstream
 int validarParametros(int arg, char *args[])
 {
     if (arg != 2)
     {
+=======
+
+int validarParametros(int arg, char *args[]) {
+    if (arg != 2) {
+>>>>>>> Stashed changes
         printf("\n cantidad de paramentros incorrecta , verifique la ayuda\n");
         return 1;
     }
     struct stat myFile;
+<<<<<<< Updated upstream
     if (stat(args[1], &myFile) < 0)
     {
+=======
+    if (stat(args[1], &myFile) < 0) {
+>>>>>>> Stashed changes
         printf("\nno se encontro el archivo %s\n", args[1]);
         return 1;
     }
@@ -47,15 +57,40 @@ int obtenerPuerto(char *archivo)
 {
     int puerto = 0;
     FILE *fp = fopen(archivo, "r");
+    fflush(stdin);
     fscanf(fp, "%d", &puerto);
+
+    fclose(fp);
 
     return puerto;
 }
 
+<<<<<<< Updated upstream
 int main(int arg, char *args[])
 {
     if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0))
     {
+=======
+char *obtenerIp(char *archivo) {
+    char ip[16];
+    int puerto = 0;
+    FILE *fp = fopen(archivo, "r");
+
+    strcpy(ip, "");
+
+    fflush(stdin);
+    fscanf(fp, "%d", &puerto);
+    fflush(stdin);
+    fscanf(fp, "%s", ip);
+
+    fclose(fp);
+
+    return ip;
+}
+
+int main(int arg, char *args[]) {
+    if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0)) {
+>>>>>>> Stashed changes
 
         mostrarAyuda();
 
@@ -66,7 +101,7 @@ int main(int arg, char *args[])
     const char *END_REQUEST = "QUIT";
     struct sockaddr_in direccionServidor;
     direccionServidor.sin_family = AF_INET;
-    direccionServidor.sin_addr.s_addr = inet_addr("127.0.0.1");
+    direccionServidor.sin_addr.s_addr = inet_addr(obtenerIp(args[1]));
     direccionServidor.sin_port = htons(obtenerPuerto(args[1]));
 
     int cliente = socket(AF_INET, SOCK_STREAM, 0);

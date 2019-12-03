@@ -65,7 +65,9 @@ void recibirResultado(mensaje *resultado)
     close(fds);
     munmap(mem, tam);
     sem_close(sem3);
+    sem_unlink(SEMAFORO_C);
     sem_close(sem4);
+    sem_unlink(SEMAFORO_D);
 }
 
 void enviarConsulta(char *consulta, int tam)
