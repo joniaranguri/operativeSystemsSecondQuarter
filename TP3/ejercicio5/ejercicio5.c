@@ -36,7 +36,7 @@ int validarParametros(int arg, char *args[]) {
     //args[1] archivo de productos
     //args[2] archivo de configuracion
 
-    if (arg < 2 || arg > 3) {
+    if (arg != 3) {
         printf("\nCANTIDAD DE PARAMETROS INCORRECTOS,VERIFIQUE LA AYUDA\n");
         return 1;
     }
@@ -166,9 +166,9 @@ int main(int arg, char *args[]) {
     if (validarParametros(arg, args) == 1)
         return 1;
     int x;
-//    x = fork();
-//    if (x > 0)
-//        return 1;
+    x = fork();
+    if (x > 0)
+        return 1;
     struct sockaddr_in direccionServidor;
     direccionServidor.sin_family = AF_INET;
     direccionServidor.sin_addr.s_addr = INADDR_ANY;
