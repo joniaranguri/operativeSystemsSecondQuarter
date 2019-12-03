@@ -13,34 +13,21 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <sys/stat.h>
-int validarConsulta(char *consulta)
-{
+
+int validarConsulta(char *consulta) {
     char *igual = strchr(consulta, '=');
     if (!igual)
         return 1;
     return 0;
 }
 
-<<<<<<< Updated upstream
-int validarParametros(int arg, char *args[])
-{
-    if (arg != 2)
-    {
-=======
-
 int validarParametros(int arg, char *args[]) {
     if (arg != 2) {
->>>>>>> Stashed changes
         printf("\n cantidad de paramentros incorrecta , verifique la ayuda\n");
         return 1;
     }
     struct stat myFile;
-<<<<<<< Updated upstream
-    if (stat(args[1], &myFile) < 0)
-    {
-=======
     if (stat(args[1], &myFile) < 0) {
->>>>>>> Stashed changes
         printf("\nno se encontro el archivo %s\n", args[1]);
         return 1;
     }
@@ -48,13 +35,11 @@ int validarParametros(int arg, char *args[]) {
     return 0;
 }
 
-void mostrarAyuda()
-{
+void mostrarAyuda() {
     printf("\n Ejemplo de ejecucion: \n ./consultar archivoDeConfig \n Se pediran las consultas interactivamente la terminal \n Para finaliza ingrese QUIT\n");
 }
 
-int obtenerPuerto(char *archivo)
-{
+int obtenerPuerto(char *archivo) {
     int puerto = 0;
     FILE *fp = fopen(archivo, "r");
     fflush(stdin);
@@ -65,12 +50,6 @@ int obtenerPuerto(char *archivo)
     return puerto;
 }
 
-<<<<<<< Updated upstream
-int main(int arg, char *args[])
-{
-    if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0))
-    {
-=======
 char *obtenerIp(char *archivo) {
     char ip[16];
     int puerto = 0;
@@ -90,10 +69,7 @@ char *obtenerIp(char *archivo) {
 
 int main(int arg, char *args[]) {
     if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0)) {
->>>>>>> Stashed changes
-
         mostrarAyuda();
-
         return 0;
     }
     if (validarParametros(arg, args) == 1)
@@ -105,22 +81,19 @@ int main(int arg, char *args[]) {
     direccionServidor.sin_port = htons(obtenerPuerto(args[1]));
 
     int cliente = socket(AF_INET, SOCK_STREAM, 0);
-    if (connect(cliente, (void *)&direccionServidor, sizeof(direccionServidor)) != 0)
-    {
+    if (connect(cliente, (void *) &direccionServidor, sizeof(direccionServidor)) != 0) {
         perror("\nNo se pudo conectar\n");
         return 1;
     }
     char mensaje[1000];
     printf("\nEscriba su consulta: ");
     scanf("%s", mensaje);
-    while (validarConsulta(mensaje) == 1)
-    {
+    while (validarConsulta(mensaje) == 1) {
         printf("\nConsulta invalida no se encuenta el = \nEscriba su consulta: ");
         scanf("%s", mensaje);
     }
 
-    while (strcmp(mensaje, END_REQUEST) != 0)
-    {
+    while (strcmp(mensaje, END_REQUEST) != 0) {
 
         send(cliente, mensaje, strlen(mensaje), 0);
 
@@ -139,8 +112,7 @@ int main(int arg, char *args[]) {
         printf("\nEscriba su consulta: ");
 
         scanf("%s", mensaje);
-        while (validarConsulta(mensaje) == 1)
-        {
+        while (validarConsulta(mensaje) == 1) {
             printf("\nConsulta invalida no se encuenta el = \nEscriba su consulta: ");
             scanf("%s", mensaje);
         }
