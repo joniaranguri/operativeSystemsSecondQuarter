@@ -15,13 +15,11 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
-void mostrarAyuda()
-{
+void mostrarAyuda() {
     printf("\n Ejemplo de ejecucion: \n ./ej5 ./archivoProductos ./archivoConf \n");
 }
 
-void agregarSalida(char out[], char id[], char articulo[], char producto[], char marca[])
-{
+void agregarSalida(char out[], char id[], char articulo[], char producto[], char marca[]) {
     strcat(out, id);
     strcat(out, ";");
     strcat(out, articulo);
@@ -33,29 +31,24 @@ void agregarSalida(char out[], char id[], char articulo[], char producto[], char
     return;
 }
 
-int validarParametros(int arg, char *args[])
-{
+int validarParametros(int arg, char *args[]) {
     //args[0] nombre de script
     //args[1] archivo de productos
     //args[2] archivo de configuracion
 
-    if (arg < 2 || arg > 3)
-    {
+    if (arg < 2 || arg > 3) {
         printf("\nCANTIDAD DE PARAMETROS INCORRECTOS,VERIFIQUE LA AYUDA\n");
         return 1;
     }
 
     struct stat myFile;
-    if (stat(args[1], &myFile) < 0)
-    {
+    if (stat(args[1], &myFile) < 0) {
         printf("\nno se encontro el archivo %s\n", args[1]);
         return 1;
     }
 
-    if (arg == 3)
-    {
-        if (stat(args[2], &myFile) < 0)
-        {
+    if (arg == 3) {
+        if (stat(args[2], &myFile) < 0) {
             printf("\nno se encontro el archivo %s\n", args[2]);
             return 1;
         }
@@ -64,19 +57,16 @@ int validarParametros(int arg, char *args[])
     return 0;
 }
 
-int obtenerCantidadDeRegistros(char *path[])
-{
+int obtenerCantidadDeRegistros(char *path[]) {
     FILE *pf;
     int cantfilas = 0;
     pf = fopen(*path, "r");
-    if (!pf)
-    {
+    if (!pf) {
         printf("no se encuentra el archivo\n");
         exit(0);
     }
     char fila[100];
-    while (!feof(pf))
-    {
+    while (!feof(pf)) {
         fscanf(pf, " %[^\n]", fila);
         cantfilas++;
     }
@@ -84,8 +74,7 @@ int obtenerCantidadDeRegistros(char *path[])
     return cantfilas;
 }
 
-void filtrarArchivo(char *path[], char *filtro, int registros, char *salida)
-{
+void filtrarArchivo(char *path[], char *filtro, int registros, char *salida) {
 
     FILE *pf;
     int esId = strncmp("ID", filtro, 2);
@@ -106,8 +95,7 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida)
 
     // printf("\nFILTRO: %s\n", filtro);
     pf = fopen(*path, "r");
-    if (!pf)
-    {
+    if (!pf) {
 
         printf("\nno se  encontro el archivo %s\n", *path);
         exit(0);
@@ -117,8 +105,7 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida)
     strcpy(producto, " ");
     strcpy(marca, " ");
 
-    while (!feof(pf))
-    {
+    while (!feof(pf)) {
 
         j++;
         fflush(stdin);
@@ -141,18 +128,13 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida)
         // printf(" registro:%d marca leida: %s",j,marca);
 
         // printf("marcaLeida:%s marcaBuscada:%s resultadoComparacion:%d\n",marca,buscado,valorComparacion);
-        if (esId == 0 && strcmp(id, buscado) == 0)
-        {
+        if (esId == 0 && strcmp(id, buscado) == 0) {
 
             agregarSalida(salida, id, articulo, producto, marca);
-        }
-        else if (esMarca == 0 && strcmp(marca, buscado) == 0)
-        {
+        } else if (esMarca == 0 && strcmp(marca, buscado) == 0) {
 
             agregarSalida(salida, id, articulo, producto, marca);
-        }
-        else if (esProducto == 0 && strcmp(producto, buscado) == 0)
-        {
+        } else if (esProducto == 0 && strcmp(producto, buscado) == 0) {
 
             agregarSalida(salida, id, articulo, producto, marca);
         }
@@ -168,8 +150,7 @@ void filtrarArchivo(char *path[], char *filtro, int registros, char *salida)
     return;
 }
 
-int obtenerPuerto(char *archivo)
-{
+int obtenerPuerto(char *archivo) {
     int puerto = 0;
     FILE *fp = fopen(archivo, "r");
     fscanf(fp, "%d", &puerto);
@@ -177,10 +158,8 @@ int obtenerPuerto(char *archivo)
     return puerto;
 }
 
-int main(int arg, char *args[])
-{
-    if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0))
-    {
+int main(int arg, char *args[]) {
+    if (arg == 2 && (strcmp(args[1], "-h") == 0 || strcmp(args[1], "-?") == 0 || strcmp(args[1], "-help") == 0)) {
         mostrarAyuda();
         return 0;
     }
@@ -200,8 +179,7 @@ int main(int arg, char *args[])
     int activado = 1;
     setsockopt(servidor, SOL_SOCKET, SO_REUSEADDR, &activado, sizeof(activado));
 
-    if (bind(servidor, (void *)&direccionServidor, sizeof(direccionServidor)) != 0)
-    {
+    if (bind(servidor, (void *) &direccionServidor, sizeof(direccionServidor)) != 0) {
         perror("Falló el bind");
         return 1;
     }
@@ -214,22 +192,18 @@ int main(int arg, char *args[])
     struct sockaddr_in direccionCliente;
     unsigned int tamanioDireccion;
 
-    while (1)
-    {
-        int cliente = accept(servidor, (void *)&direccionCliente, &tamanioDireccion);
+    while (1) {
+        int cliente = accept(servidor, (void *) &direccionCliente, &tamanioDireccion);
 
-        printf("Recibí una conexión en %d!!\n", cliente);
+//        printf("Recibí una conexión en %d!!\n", cliente);
 
-        if (fork())
-        {
-            char *buffer = malloc(1000);
+        if (fork()) {
+            char *buffer = malloc(50000);
 
-            while (1)
-            {
+            while (1) {
 
-                int bytesRecibidos = recv(cliente, buffer, 1000, 0);
-                if (bytesRecibidos <= 0)
-                {
+                int bytesRecibidos = recv(cliente, buffer, 50000, 0);
+                if (bytesRecibidos <= 0) {
                     continue;
                 }
 
@@ -239,8 +213,7 @@ int main(int arg, char *args[])
                 char *aMayuscula = buffer;
 
                 // pongo en mayuscula el filtro
-                for (int i = 0; i < cantCaracteres; i++)
-                {
+                for (int i = 0; i < cantCaracteres; i++) {
                     *aMayuscula = toupper(*aMayuscula);
                     aMayuscula++;
                 }
