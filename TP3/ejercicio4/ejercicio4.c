@@ -187,6 +187,7 @@ void recibirConsulta(char *filtro) {
 
 int main(int arg, char *args[]) {
     signal(SIGINT, sig_handler);
+    signal(SIGTERM, sig_handler);
     shm_unlink(MEMORIA_RESULTADOS);
     sem_unlink(SEMAFORO_A);
     sem_unlink(SEMAFORO_B);
