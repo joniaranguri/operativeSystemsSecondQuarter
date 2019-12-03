@@ -20,6 +20,7 @@
 
 void sig_handler(int signal) {
     shm_unlink(MEMORIA_RESULTADOS);
+    shm_unlink(MEMORIA_CONSULTA);
     sem_unlink(SEMAFORO_A);
     sem_unlink(SEMAFORO_B);
     sem_unlink(SEMAFORO_C);
