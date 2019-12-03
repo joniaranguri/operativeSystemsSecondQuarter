@@ -126,6 +126,8 @@ int main(int arg, char *args[])
         }
     }
 
+    sem_unlink(SEMAFORO_A);
+    sem_unlink(SEMAFORO_B)
     sem_unlink(SEMAFORO_C);
     sem_unlink(SEMAFORO_D);
 
