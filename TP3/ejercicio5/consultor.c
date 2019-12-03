@@ -79,21 +79,25 @@ int main(int arg, char *args[]) {
         scanf("%s", mensaje);
     }
 
+    int received_int = 0;
+
     while (strcmp(mensaje, END_REQUEST) != 0) {
 
         send(cliente, mensaje, strlen(mensaje), 0);
 
         printf("\nSE ENVIO LA CONSULTA\n");
 
-        int received_int = 0;
+        received_int = 0;
 
         read(cliente, &received_int, sizeof(received_int));
 
-        char respuesta[ntohl(received_int)];
+        char *respuesta = (char *) malloc(received_int);
 
-        int bytesRecibidos = recv(cliente, respuesta, ntohl(received_int), 0);
+        int bytesRecibidos = recv(cliente, respuesta, received_int, 0);
         respuesta[bytesRecibidos] = '\0';
         printf("%s\n", respuesta);
+
+        free(respuesta);
 
         printf("\nEscriba su consulta: ");
 

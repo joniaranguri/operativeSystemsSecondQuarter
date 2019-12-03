@@ -166,9 +166,9 @@ int main(int arg, char *args[]) {
     if (validarParametros(arg, args) == 1)
         return 1;
     int x;
-    x = fork();
-    if (x > 0)
-        return 1;
+//    x = fork();
+//    if (x > 0)
+//        return 1;
     struct sockaddr_in direccionServidor;
     direccionServidor.sin_family = AF_INET;
     direccionServidor.sin_addr.s_addr = INADDR_ANY;
@@ -198,11 +198,11 @@ int main(int arg, char *args[]) {
 //        printf("Recibí una conexión en %d!!\n", cliente);
 
         if (fork()) {
-            char *buffer = malloc(50000);
+            char *buffer = malloc(1000);
 
             while (1) {
 
-                int bytesRecibidos = recv(cliente, buffer, 50000, 0);
+                int bytesRecibidos = recv(cliente, buffer, 1000, 0);
                 if (bytesRecibidos <= 0) {
                     continue;
                 }
@@ -229,11 +229,11 @@ int main(int arg, char *args[]) {
                 int number_to_send = strlen(salida);
                 // Put your value
                 char salida_[number_to_send];
-                int converted_number = htonl(number_to_send);
+//                int converted_number = htonl(number_to_send);
                 strcpy(salida_, salida);
 
                 // Write the number to the opened socket
-                write(cliente, &converted_number, sizeof(converted_number));
+                write(cliente, &number_to_send, sizeof(number_to_send));
 
                 send(cliente, salida_, sizeof(salida_), 0);
             }
